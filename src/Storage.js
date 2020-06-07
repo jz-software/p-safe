@@ -37,6 +37,21 @@ class Storage{
         dataset.splice(toRemove, 1);
         this.saveJSON(dataset, './storage/passwords.json');
     }
+    decryptAll(dataset, password){
+        const Cryptr = require('cryptr');
+        const cryptr = new Cryptr('ShrekSensei33');
+
+        const decrypted = [];
+        for(let i=0; i<dataset.length; i++){
+            const toSave = {
+                service: dataset[i].service,
+                password: cryptr.decrypt(dataset[i].password)
+            }
+            decrypted.push(toSave);
+        }        
+        return decrypted;
+
+    }
 }
 
 module.exports = Storage

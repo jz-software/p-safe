@@ -4,11 +4,12 @@
   "description": "A program to store your passwords.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "author": "JMax",
   "license": "MIT",
   "dependencies": {
-    "cryptr": "^6.0.2"
+    "cryptr": "^6.0.2",
+    "electron": "^9.0.2"
   }
 }

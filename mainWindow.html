@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>PasswordStorage</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="passwords">
+ 
+        </div>
+
+        <script>
+            function myFunction(x) {
+                var pass = document.querySelectorAll("#pass");
+                if (pass[x].type === "password") {
+                    pass[x].type = "text";
+                } else {
+                    pass[x].type = "password";
+                }
+            } 
+        </script>
+
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+            const ul = document.querySelector('.passwords');
+
+            ipcRenderer.on('password:update', function(e, decryptedDatabase){
+                for(let i=0; i<decryptedDatabase.length; i++){
+                    const li = document.createElement('div');
+                    li.innerHTML = 
+                    `
+                    <img src="images/f_logo_RGB-Hex-Blue_512.png">
+                    <p>${decryptedDatabase[i].service}</p>
+                    <p>Lorenzo</p>
+                    <!--<p class="password">********</p>-->
+                    <input type="password" value="${decryptedDatabase[i].password}" id="pass">
+                    <input type="checkbox" onclick="myFunction(${i})">Show
+                    `
+                    ul.appendChild(li);
+                }
+            })
+
+        </script>
+    </body>
+</html>
