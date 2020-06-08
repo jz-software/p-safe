@@ -2,6 +2,7 @@ class Storage{
     constructor(){
         
     }
+    user;
     saveJSON(myObject, path){
         var fs = require('fs');
         var data = JSON.stringify(myObject);
@@ -21,6 +22,25 @@ class Storage{
         
         return cryptr.encrypt(string);
     }
+    findWithAttr(array, attr, value) {
+        for(var i = 0; i < array.length; i += 1) {
+            if(array[i][attr] === value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    findUser(service){
+        const userIndex = this.findWithAttr(require('../storage/passwords.json'), "user", this.user);
+        return userIndex;
+    }
+    mergeDatabase(dataset){
+        const database = require('../storage/passwords.json');
+        const index = this.findUser(this.user);
+
+        database[index].passwords = dataset;
+        return database;
+    }
     savePassword(dataset, service, login, toStore, password){
         const saveData = {
             service: service,
@@ -28,7 +48,8 @@ class Storage{
             password: this.encryptString(toStore, password)
         }
         dataset.push(saveData)
-        this.saveJSON(dataset, './storage/passwords.json')
+
+        this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json')
     }
     changePassword(dataset, index, newValue, password){
         dataset[index].password = this.encryptString(newValue, password);
@@ -36,7 +57,8 @@ class Storage{
     }
     removePassword(dataset, toRemove){
         dataset.splice(toRemove, 1);
-        this.saveJSON(dataset, './storage/passwords.json');
+
+        this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json');
     }
     decryptAll(dataset, password){
         const Cryptr = require('cryptr');

@@ -1,4 +1,7 @@
-const dataset = require('./storage/passwords.json')
+let rawDataset = require('./storage/passwords.json')
+const user = rawDataset[0].user;
+const dataset = rawDataset[0].passwords;
+rawDataset = null;
 const Storage = require('./src/Storage')
 
 function findWithAttr(array, attr, value) {
@@ -15,7 +18,9 @@ function findService(service){
 }
 
 const storage = new Storage();
+storage.user = user;
 const mainPassword = "ShrekSensei33";
+storage.findUser();
 
 // Storage interaction
 //storage.savePassword(dataset, "GitHub", "passwordToStore", "mainPassword");
