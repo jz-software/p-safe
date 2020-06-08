@@ -73,15 +73,16 @@ function createAddWindow(){
 ipcMain.on('password:add', function(e, item){
     //mainWindow.webContents.send('password:add', item);
     addWindow.close();
-    console.log(item)
     storage.savePassword(dataset, item.service, item.password, mainPassword);
     updateWindow();
 });
 // Catch item:add
 ipcMain.on('password:delete', function(e, item){
     console.log("Password deleted")
-    console.log(item)
     storage.removePassword(dataset, item.index);
+    updateWindow();
+});
+ipcMain.on('password:update', function(e){
     updateWindow();
 });
 
