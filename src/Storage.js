@@ -30,13 +30,16 @@ class Storage{
         }
         return -1;
     }
-    findUser(service){
-        const userIndex = this.findWithAttr(require('../storage/passwords.json'), "user", this.user);
+    findUser(service, name){
+        const userIndex = this.findWithAttr(require('../storage/passwords.json'), "user", name);
         return userIndex;
     }
+    // Merges the password dataset with the entire database before saving it to JSON
+    // Must be always used before saving or loss of data will occur
     mergeDatabase(dataset){
         const database = require('../storage/passwords.json');
-        const index = this.findUser(this.user);
+        const index = this.findUser('user', this.user);
+        console.log(index)
 
         database[index].passwords = dataset;
         return database;
@@ -62,7 +65,7 @@ class Storage{
     }
     decryptAll(dataset, password){
         const Cryptr = require('cryptr');
-        const cryptr = new Cryptr('ShrekSensei33');
+        const cryptr = new Cryptr(password);
 
         const decrypted = [];
         for(let i=0; i<dataset.length; i++){
@@ -74,7 +77,31 @@ class Storage{
             decrypted.push(toSave);
         }        
         return decrypted;
+    }
+    createUser(name, password){
+        const bcrypt = require('bcrypt');
+        const data = {
+            user: name,
+            password: bcrypt.hashSync(password, 10),
+            passwords: []
+        }
+        const database = require('../storage/passwords.json');
+        database.push(data);
+        this.saveJSON(database, './storage/passwords.json');
+    }
+    // Checks the hash and returns true or false
+    validateUser(name, password){
+        const bcrypt = require('bcrypt');
+        const database = require('../storage/passwords.json');
+        const validation = bcrypt.compareSync(password, database[this.findUser('user', name)].password);
 
+        if(validation==true){
+            console.log("User authenticated");
+        }
+        else{
+            console.log("Authentication failed");
+        }
+        return validation;
     }
 }
 

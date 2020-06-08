@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add Password</title>
+        <link rel="stylesheet" type="text/css" href="loginWindow.css">
+    </head>
+    <body>
+        <form id="login">
+            <input id="loginValue" type="text" placeholder="login...">
+            <br>
+            <input id="login_password" type="text" placeholder="password...">
+            <br>
+            <input type="submit">
+        </form>
+        <br><br>
+        <form id="register">
+            <input id="login" type="text" placeholder="login...">
+            <br>
+            <input id="password" type="text" placeholder="password...">
+            <br>
+            <input type="submit">
+        </form>    
+
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+
+            const form = document.querySelector('#login');
+            form.addEventListener('submit', submitForm);
+
+            function submitForm(e){
+                e.preventDefault();
+                const item = {
+                    login: document.querySelector('#login #loginValue').value,
+                    password: document.querySelector('#login #login_password').value
+                }    
+                ipcRenderer.send('user:login', item);
+            }
+        </script>
+        <script>
+            const form2 = document.querySelector('#register');
+            form2.addEventListener('submit', submitForm);
+
+            function submitForm(e){
+                e.preventDefault();
+                const item = {
+                    login: document.querySelector('#register #login').value,
+                    password: document.querySelector('#register #password').value
+                }    
+                ipcRenderer.send('user:register', item);
+            }
+        </script>
+    </body>
+</html>

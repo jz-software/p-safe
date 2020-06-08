@@ -1,8 +1,8 @@
 let rawDataset = require('./storage/passwords.json')
-const user = rawDataset[0].user;
-const dataset = rawDataset[0].passwords;
-rawDataset = null;
 const Storage = require('./src/Storage')
+
+const storage = new Storage();
+let dataset;
 
 function findWithAttr(array, attr, value) {
     for(var i = 0; i < array.length; i += 1) {
@@ -17,9 +17,7 @@ function findService(service){
     return serviceIndex;
 }
 
-const storage = new Storage();
-storage.user = user;
-const mainPassword = "ShrekSensei33";
+let mainPassword = "";
 storage.findUser();
 
 // Storage interaction
@@ -43,7 +41,7 @@ app.on('ready', function(){
         }
     });
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'mainWindow.html'),
+        pathname: path.join(__dirname, 'loginWindow.html'),
         protocol: 'file',
         slashes: true
     }));
@@ -97,13 +95,41 @@ ipcMain.on('password:delete', function(e, item){
 ipcMain.on('password:update', function(e){
     updateWindow();
 });
+ipcMain.on('user:login', function(e, item){
+    const auth = storage.validateUser(item.login, item.password);
+    if(auth==true){
+        dataset = rawDataset[storage.findUser('user', item.login)].passwords;
+        rawDataset = null;
+        storage.user = item.login;
+        mainPassword = item.password; 
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'mainWindow.html'),
+            protocol: 'file',
+            slashes: true
+        }));
+    }
+});
+ipcMain.on('user:register', function(e, item){
+    storage.createUser(item.login, item.password)
+});
 
 // Update window
 function updateWindow(){
-    mainWindow.webContents.send('password:update', storage.decryptAll(dataset));
+    mainWindow.webContents.send('password:update', storage.decryptAll(dataset, mainPassword));
 }
 
 const mainMenuTemplate = [
+    {
+        label:'New',
+        submenu: [
+            {
+                label: 'User',
+                click(){
+                    storage.createUser('JohnDoe', 'ShrekSensei33')
+                }
+            }
+        ]
+    },
     {
         label:'File',
         submenu: [
@@ -118,7 +144,7 @@ const mainMenuTemplate = [
             },
             {
                 label: 'Delete'
-            }    
+            }
         ]
     }
 ];
