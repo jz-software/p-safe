@@ -4,3 +4,36 @@ body{
     background-color: #36393f;
     padding: 0;
 }
+
+.circles{
+    height: 96vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.circles i{
+    font-size: 30vh;
+    color: #929292;
+}
+
+.circles div{
+    display: block;
+    text-align: center;
+}
+
+.circles div input{
+    background: none;
+    border: none;
+    text-align: center;
+    border-bottom: 1px solid #929292;
+    transition: 0.3s;
+    color: #929292;
+}   
+
+.circles div input:focus {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #1EB584;
+    color: #1EB584;
+  }

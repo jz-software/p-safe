@@ -3,8 +3,10 @@
     <head>
         <title>Add Password</title>
         <link rel="stylesheet" type="text/css" href="loginWindow.css">
+        <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
     </head>
     <body>
+        <!--
         <form id="login">
             <input id="loginValue" type="text" placeholder="login...">
             <br>
@@ -19,7 +21,48 @@
             <input id="password" type="text" placeholder="password...">
             <br>
             <input type="submit">
-        </form>    
+        </form> -->
+        <div class="circles">
+            <div>
+                <i class="fas fa-user-circle"></i>
+                <br><br>
+                <input id="login" type="text" placeholder="user" spellcheck="false">
+            </div>    
+        </div>
+
+        <script>
+            let data = [];
+        </script>
+
+        <script>
+            // Get the input field
+            var input = document.getElementById("login");
+
+            // Execute a function when the user releases a key on the keyboard
+            input.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                data.push(document.querySelector('#login').value);
+                if(data.length>0){
+                    input.value = "";
+                    input.setAttribute('placeholder', 'password')
+                }
+                if(data.length>1){
+                    const item = {
+                        login: data[0],
+                        password: data[1]
+                    }    
+                    console.log(item)
+                    ipcRenderer.send('user:login', item);
+                    data = [];
+                    input.setAttribute('placeholder', 'user')
+                }
+            }
+            }); 
+        </script>
 
         <script>
             const electron = require('electron');
