@@ -6,9 +6,11 @@
     <body>
         <form>
             <div>
-                <label>Enter password</label>
-                <input type="text" id="service" autofocus>
-                <input type="text" id="password" autofocus>
+                <label>Service:</label><input type="text" id="service" autofocus>
+                <br>
+                <label>Login:</label><input type="text" id="login" autofocus>
+                <br>
+                <label>Password:</label><input type="text" id="password" autofocus>
             </div>
             <button type="submit">add password</button>
         </form>
@@ -24,6 +26,7 @@
                 e.preventDefault();
                 const item = {
                     service: document.querySelector('#service').value, 
+                    login: document.querySelector('#login').value,
                     password: document.querySelector('#password').value
                 }    
                 ipcRenderer.send('password:add', item);

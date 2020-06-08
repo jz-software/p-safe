@@ -51,9 +51,15 @@ app.on('ready', function(){
 });
 
 function createAddWindow(){
+    const position = mainWindow.getPosition()
     addWindow = new BrowserWindow({
+        parent: mainWindow,
+        modal: true,
+        show: false,
         width: 300,
         height: 200,
+        x: position[0],
+        y: position[1],
         title: 'Add Password',
         webPreferences: {
             nodeIntegration: true
@@ -67,13 +73,14 @@ function createAddWindow(){
     addWindow.on('close', function(){
         addWindow = null;
     })
+    addWindow.show();
 }
 
 // Catch item:add
 ipcMain.on('password:add', function(e, item){
     //mainWindow.webContents.send('password:add', item);
     addWindow.close();
-    storage.savePassword(dataset, item.service, item.password, mainPassword);
+    storage.savePassword(dataset, item.service, item.login, item.password, mainPassword);
     updateWindow();
 });
 // Catch item:add

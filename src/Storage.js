@@ -21,9 +21,10 @@ class Storage{
         
         return cryptr.encrypt(string);
     }
-    savePassword(dataset, service, toStore, password){
+    savePassword(dataset, service, login, toStore, password){
         const saveData = {
             service: service,
+            login: login,
             password: this.encryptString(toStore, password)
         }
         dataset.push(saveData)
@@ -45,6 +46,7 @@ class Storage{
         for(let i=0; i<dataset.length; i++){
             const toSave = {
                 service: dataset[i].service,
+                login: dataset[i].login,
                 password: cryptr.decrypt(dataset[i].password)
             }
             decrypted.push(toSave);

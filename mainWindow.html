@@ -44,7 +44,7 @@
                     `
                     <td><img src="./images/f_logo_RGB-Hex-Blue_512.png"></td>
                     <td>${decryptedDatabase[i].service}</td>
-                    <td>Lorenzo</td>
+                    <td>${decryptedDatabase[i].login}</td>
                     <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><input type="checkbox" onclick="myFunction(${i})">Show</td>
                     <td><i class="fas fa-trash" onclick="deletePassword(${i})"></i></td>
                     `
