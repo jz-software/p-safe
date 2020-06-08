@@ -3,11 +3,12 @@
     <head>
         <title>PasswordStorage</title>
         <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div class="passwords">
- 
-        </div>
+        <table cellspacing="0" cellpadding="10" class="passwords">
+
+        </table>
 
         <script>
             function myFunction(x) {
@@ -19,23 +20,33 @@
                 }
             } 
         </script>
+        <script>
+            function deletePassword(i){
+                const electron = require('electron');
+                const {ipcRenderer} = electron;
+
+                const item = {
+                    index: i
+                }    
+                ipcRenderer.send('password:delete', item);
+            }
+        </script>
 
         <script>
             const electron = require('electron');
             const {ipcRenderer} = electron;
             const ul = document.querySelector('.passwords');
-
             ipcRenderer.on('password:update', function(e, decryptedDatabase){
+                ul.innerHTML = "";
                 for(let i=0; i<decryptedDatabase.length; i++){
-                    const li = document.createElement('div');
+                    const li = document.createElement('tr');
                     li.innerHTML = 
                     `
-                    <img src="images/f_logo_RGB-Hex-Blue_512.png">
-                    <p>${decryptedDatabase[i].service}</p>
-                    <p>Lorenzo</p>
-                    <!--<p class="password">********</p>-->
-                    <input type="password" value="${decryptedDatabase[i].password}" id="pass">
-                    <input type="checkbox" onclick="myFunction(${i})">Show
+                    <td><img src="./images/f_logo_RGB-Hex-Blue_512.png"></td>
+                    <td>${decryptedDatabase[i].service}</td>
+                    <td>Lorenzo</td>
+                    <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><input type="checkbox" onclick="myFunction(${i})">Show</td>
+                    <td><i class="fas fa-trash" onclick="deletePassword(${i})"></i></td>
                     `
                     ul.appendChild(li);
                 }

@@ -1,35 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 body{
-    background-color: rgb(255, 123, 0);
+    background-color: #36393f;
+    padding: 0;
 }
 h1{
     text-align: center;
     font-family: 'Roboto', sans-serif;
 }
 
-.passwords{
+table{
+    padding: 0% 1%;
     font-family: 'Roboto', sans-serif;
-    padding: 0% 1% 0% 1%;
+    width: 100%;
+    color: #a8b9be;
+    border-spacing: 0px 10px;
 }
 
-.passwords div{
+table tr td input[type=password], select,  table tr td input[type=text]{
+    padding: 6px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+table tr{
+    background-color: #202225;
+    margin-top: 10px;
+}
+
+
+
+table tr td img{
     display: flex;
-    align-items: center;
-    background-color: white;
-    margin-top: 1%;
+    width: 40px;
+    padding-left: 10%;
 }
 
-.passwords p{
-    padding: 3% 2% 3% 3%;
-}
-
-.passwords input{
+table tr td i{
+    color: red;
+    transition: 0.1s;
     cursor: pointer;
-    margin-left: 3%;
 }
 
-.passwords div img{
-    width: 50px;
-    padding-left: 3%;
+table tr td i:hover{
+    color: rgb(104, 0, 0);
 }
