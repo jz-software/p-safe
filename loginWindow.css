@@ -29,6 +29,7 @@ body{
     border-bottom: 1px solid #929292;
     transition: 0.3s;
     color: #929292;
+    font-family: 'Roboto', sans-serif;
 }   
 
 .circles div input:focus {
@@ -36,4 +37,4 @@ body{
     border: none;
     border-bottom: 1px solid #1EB584;
     color: #1EB584;
-  }
+}

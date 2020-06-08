@@ -55,10 +55,9 @@
                         login: data[0],
                         password: data[1]
                     }    
-                    console.log(item)
                     ipcRenderer.send('user:login', item);
-                    data = [];
-                    input.setAttribute('placeholder', 'user')
+                    data.pop();
+                    input.setAttribute('placeholder', 'password')
                 }
             }
             }); 
@@ -67,6 +66,15 @@
         <script>
             const electron = require('electron');
             const {ipcRenderer} = electron;
+            ipcRenderer.on('user:login:wrong', function(e, decryptedDatabase){
+                const input = document.querySelector('#login');
+                input.setAttribute('placeholder', 'Try again')
+                input.style.borderBottom = "1px solid red";
+            })
+
+        </script>
+
+        <script>
 
             const form = document.querySelector('#login');
             form.addEventListener('submit', submitForm);
@@ -80,6 +88,8 @@
                 ipcRenderer.send('user:login', item);
             }
         </script>
+
+        
         <script>
             const form2 = document.querySelector('#register');
             form2.addEventListener('submit', submitForm);

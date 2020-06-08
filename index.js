@@ -108,9 +108,17 @@ ipcMain.on('user:login', function(e, item){
             slashes: true
         }));
     }
+    else{
+        mainWindow.webContents.send('user:login:wrong', "hi");
+    }
 });
 ipcMain.on('user:register', function(e, item){
     storage.createUser(item.login, item.password)
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'loginWindow.html'),
+        protocol: 'file',
+        slashes: true
+    }));
 });
 
 // Update window
@@ -125,22 +133,26 @@ const mainMenuTemplate = [
             {
                 label: 'User',
                 click(){
-                    storage.createUser('JohnDoe', 'ShrekSensei33')
+                    storage.createUser('JohnDoe', 'JH123')
                 }
-            }
+            },
+            {
+                label: 'Password',
+                click(){
+                    createAddWindow();
+                }
+            },
         ]
     },
     {
         label:'File',
         submenu: [
-            {
-                label: 'Add',
-                click(){
-                    createAddWindow();
-                }
-            },
             {    
-                label: 'Change'
+                label: 'Reload',
+                click(){
+                    app.relaunch()
+                    app.exit()
+                }
             },
             {
                 label: 'Delete'
