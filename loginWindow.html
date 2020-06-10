@@ -31,12 +31,27 @@
         </div>
 
         <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
             let data = [];
         </script>
 
         <script>
             // Get the input field
             var input = document.getElementById("login");
+
+            ipcRenderer.on('user:valid', function(e){
+                input.value = "";
+                input.setAttribute('placeholder', 'password')
+                input.style.borderBottom = "1px solid #1EB584";
+            })
+            ipcRenderer.on('user:wrong', function(e){
+                data = [];
+                input.value = "";
+                input.setAttribute('placeholder', 'user not found');
+                input.style.borderBottom = "1px solid red";
+                input.style.animation = "shake 0.3s"
+            })
 
             // Execute a function when the user releases a key on the keyboard
             input.addEventListener("keyup", function(event) {
@@ -47,8 +62,10 @@
                 // Trigger the button element with a click
                 data.push(document.querySelector('#login').value);
                 if(data.length>0){
-                    input.value = "";
-                    input.setAttribute('placeholder', 'password')
+                    const item = {
+                        username: document.querySelector('#login').value
+                    }
+                    ipcRenderer.send('user:checkLogin', item);
                 }
                 if(data.length>1){
                     const item = {
@@ -64,8 +81,6 @@
         </script>
 
         <script>
-            const electron = require('electron');
-            const {ipcRenderer} = electron;
             ipcRenderer.on('user:login:wrong', function(e, decryptedDatabase){
                 const input = document.querySelector('#login');
                 input.setAttribute('placeholder', 'Try again')

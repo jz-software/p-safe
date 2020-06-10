@@ -120,6 +120,22 @@ ipcMain.on('user:register', function(e, item){
         slashes: true
     }));
 });
+ipcMain.on('user:checkLogin', function(e, item){
+    const allUsers = storage.getAllUsers();
+    let output = false;
+
+    for(let i=0; i<allUsers.length; i++){
+        if(allUsers[i]==item.username){
+            output = true;
+        }
+    }
+    if(output==true){
+        mainWindow.webContents.send('user:valid');
+    }  
+    else{
+        mainWindow.webContents.send('user:wrong');
+    }  
+});
 
 // Update window
 function updateWindow(){

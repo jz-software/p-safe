@@ -109,7 +109,7 @@ class Storage{
         for(let i=0; i<database.length; i++){
             userArray.push(database[i].user)
         }
-        console.log(userArray);
+        return userArray;
     }
 
 }
