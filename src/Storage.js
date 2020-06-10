@@ -103,6 +103,15 @@ class Storage{
         }
         return validation;
     }
+    getAllUsers(){
+        const database = require('../storage/passwords.json');
+        const userArray = [];
+        for(let i=0; i<database.length; i++){
+            userArray.push(database[i].user)
+        }
+        console.log(userArray);
+    }
+
 }
 
 module.exports = Storage
