@@ -133,7 +133,11 @@ const mainMenuTemplate = [
             {
                 label: 'User',
                 click(){
-                    storage.createUser('JohnDoe', 'JH123')
+                    mainWindow.loadURL(url.format({
+                        pathname: path.join(__dirname, 'createPassword.html'),
+                        protocol: 'file',
+                        slashes: true
+                    }));
                 }
             },
             {
