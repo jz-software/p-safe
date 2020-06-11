@@ -48,3 +48,10 @@ table tr td i{
 table tr td i:hover{
     color: rgb(104, 0, 0);
 }
+
+.welcome{
+    margin: 1%;
+    padding: 0.1%;
+    background-color: #202225;
+    color: #a8b9be;
+}

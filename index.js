@@ -136,6 +136,9 @@ ipcMain.on('user:checkLogin', function(e, item){
         mainWindow.webContents.send('user:wrong');
     }  
 });
+ipcMain.on('user:info', function(e){
+    mainWindow.webContents.send('user:infosent', storage.user);
+});    
 
 // Update window
 function updateWindow(){
