@@ -82,7 +82,7 @@ class Storage{
         const bcrypt = require('bcrypt');
         const data = {
             user: name,
-            email: email,
+            email: this.encryptString(email, password),
             password: bcrypt.hashSync(password, 10),
             passwords: []
         }

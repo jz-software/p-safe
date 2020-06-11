@@ -211,5 +211,3 @@ if(process.env.NODE_ENV !== 'production'){
         ]
     })
 }
-
-storage.getAllUsers();
