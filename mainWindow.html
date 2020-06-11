@@ -22,14 +22,22 @@
             })
         </script>
 
-        <!--Welcome Message-->
-        <div class="welcome">
-            <h1>Welcome to <strong></strong> &#128075</h1>
+        <!-- Side navigation -->
+        <div class="sidenav">
+            <a><i class="fas fa-plus-circle" onclick="ipcRenderer.send('password:create');"></i></a>
+            <a><i class="fas fa-user" onclick="ipcRenderer.send('user:create');"></i></a>
+            <a><i class="fas fa-bookmark"></i></a>
+            <a><i class="fas fa-sliders-h"></i></a>
         </div>
 
-        <table cellspacing="0" cellpadding="10" class="passwords">
-
-        </table>
+        <div class="main">
+            <!--Welcome Message-->
+            <div class="welcome">
+                <h1>Welcome to <strong></strong> &#128075</h1>
+            </div>
+            
+            <table cellspacing="0" cellpadding="10" class="passwords"></table>
+        </div>
 
         <script>
             function myFunction(x) {

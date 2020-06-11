@@ -138,51 +138,27 @@ ipcMain.on('user:checkLogin', function(e, item){
 });
 ipcMain.on('user:info', function(e){
     mainWindow.webContents.send('user:infosent', storage.user);
-});    
+});   
+
+// Main Page
+ipcMain.on('password:create', function(e){
+    createAddWindow();
+});
+ipcMain.on('user:create', function(e){
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'createPassword.html'),
+        protocol: 'file',
+        slashes: true
+    }));
+});
+
 
 // Update window
 function updateWindow(){
     mainWindow.webContents.send('password:update', storage.decryptAll(dataset, mainPassword));
 }
 
-const mainMenuTemplate = [
-    {
-        label:'New',
-        submenu: [
-            {
-                label: 'User',
-                click(){
-                    mainWindow.loadURL(url.format({
-                        pathname: path.join(__dirname, 'createPassword.html'),
-                        protocol: 'file',
-                        slashes: true
-                    }));
-                }
-            },
-            {
-                label: 'Password',
-                click(){
-                    createAddWindow();
-                }
-            },
-        ]
-    },
-    {
-        label:'File',
-        submenu: [
-            {    
-                label: 'Reload',
-                click(){
-                    app.relaunch()
-                    app.exit()
-                }
-            },
-            {
-                label: 'Delete'
-            }
-        ]
-    }
-];
+const mainMenuTemplate = [];
 
 // If mac, add empty object to menu
 if(process.platform == 'darwin'){
@@ -200,6 +176,13 @@ if(process.env.NODE_ENV !== 'production'){
                 'Ctrl+I',
                 click(item, focusedWindow){
                     focusedWindow.toggleDevTools();
+                }
+            },
+            {    
+                label: 'Restart',
+                click(){
+                    app.relaunch()
+                    app.exit()
                 }
             },
             {
