@@ -113,7 +113,7 @@ ipcMain.on('user:login', function(e, item){
     }
 });
 ipcMain.on('user:register', function(e, item){
-    storage.createUser(item.login, item.password)
+    storage.createUser(item.login, item.email, item.password)
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'loginWindow.html'),
         protocol: 'file',

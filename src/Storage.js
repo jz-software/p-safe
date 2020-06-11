@@ -78,10 +78,11 @@ class Storage{
         }        
         return decrypted;
     }
-    createUser(name, password){
+    createUser(name, email, password){
         const bcrypt = require('bcrypt');
         const data = {
             user: name,
+            email: email,
             password: bcrypt.hashSync(password, 10),
             passwords: []
         }
