@@ -1,12 +1,12 @@
 {
-  "name": "passwordsaver",
+  "name": "P-Safe",
   "version": "1.0.0",
-  "description": "A program to store your passwords.",
+  "description": "Password manager written in Node.js",
   "main": "index.js",
   "scripts": {
     "start": "electron ."
   },
-  "author": "JMax",
+  "author": "JZ-Software",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.0",
