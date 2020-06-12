@@ -53,38 +53,15 @@ app.on('ready', function(){
     Menu.setApplicationMenu(mainMenu);
 });
 
-function createAddWindow(){
-    const position = mainWindow.getPosition()
-    addWindow = new BrowserWindow({
-        parent: mainWindow,
-        modal: true,
-        show: false,
-        width: 300,
-        height: 200,
-        x: position[0],
-        y: position[1],
-        title: 'Add Password',
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-    addWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'addWindow.html'),
-        protocol: 'file',
-        slashes: true
-    }));
-    addWindow.on('close', function(){
-        addWindow = null;
-    })
-    addWindow.show();
-}
-
 // Catch item:add
 ipcMain.on('password:add', function(e, item){
     //mainWindow.webContents.send('password:add', item);
-    addWindow.close();
     storage.savePassword(dataset, item.service, item.login, item.password, mainPassword);
-    updateWindow();
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'mainWindow.html'),
+        protocol: 'file',
+        slashes: true
+    }));
 });
 // Catch item:add
 ipcMain.on('password:delete', function(e, item){
@@ -142,11 +119,15 @@ ipcMain.on('user:info', function(e){
 
 // Main Page
 ipcMain.on('password:create', function(e){
-    createAddWindow();
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'createPassword.html'),
+        protocol: 'file',
+        slashes: true
+    }));
 });
 ipcMain.on('user:create', function(e){
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'createPassword.html'),
+        pathname: path.join(__dirname, 'createUser.html'),
         protocol: 'file',
         slashes: true
     }));
