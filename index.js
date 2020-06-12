@@ -29,7 +29,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu, ipcMain} = electron;
+const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 
 let mainWindow;
 let addWindow;
@@ -56,7 +56,7 @@ app.on('ready', function(){
 // Catch item:add
 ipcMain.on('password:add', function(e, item){
     //mainWindow.webContents.send('password:add', item);
-    storage.savePassword(dataset, item.service, item.login, item.password, mainPassword);
+    storage.savePassword(dataset, item.service, item.login, item.password, item.icon ,mainPassword);
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'mainWindow.html'),
         protocol: 'file',
@@ -131,6 +131,19 @@ ipcMain.on('user:create', function(e){
         protocol: 'file',
         slashes: true
     }));
+});
+
+ipcMain.on('password:choosePicture', function(e){
+    dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'], filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]}).then(result => {
+        if(result.canceled==false){
+            console.log(result.filePaths)
+            mainWindow.webContents.send('password:picture', result.filePaths[0]);
+        }
+
+      }).catch(err => {
+        console.log(err)
+      })
+      
 });
 
 

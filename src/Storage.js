@@ -55,12 +55,32 @@ class Storage{
         return database;
     }
 
-    savePassword(dataset, service, login, toStore, password){
+    makeString(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+     
+    savePassword(dataset, service, login, toStore, icon, password){
+        const fs = require('fs');
+        const path = require('path');
+
         const saveData = {
             service: service,
             login: login,
-            password: this.encryptString(toStore, password)
+            password: this.encryptString(toStore, password),
+            icon: `${this.makeString(32)}.${path.extname(icon)}`
         }
+
+        fs.copyFile(icon, `./storage/icons/${saveData.icon}`, (err) => {
+            if (err) throw err;
+            console.log('Icon was copied to ./icons/');
+        });
+
         dataset.push(saveData)
 
         this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json')
@@ -70,9 +90,17 @@ class Storage{
         this.saveJSON(dataset, './storage/passwords.json');
     }
     removePassword(dataset, toRemove){
-        dataset.splice(toRemove, 1);
+        const fs = require('fs')
+        try {
+            fs.unlinkSync(`./storage/icons/${dataset[toRemove].icon}`)
 
+        } catch(err) {
+            console.error(err)
+        }
+
+        dataset.splice(toRemove, 1);
         this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json');
+
     }
     decryptAll(dataset, password){
         const Cryptr = require('cryptr');
@@ -83,7 +111,8 @@ class Storage{
             const toSave = {
                 service: dataset[i].service,
                 login: dataset[i].login,
-                password: cryptr.decrypt(dataset[i].password)
+                password: cryptr.decrypt(dataset[i].password),
+                icon: dataset[i].icon
             }
             decrypted.push(toSave);
         }        

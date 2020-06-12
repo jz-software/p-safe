@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>PasswordStorage</title>
+        <title>P-Safe</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
     </head>
@@ -66,7 +66,7 @@
                     const li = document.createElement('tr');
                     li.innerHTML = 
                     `
-                    <td><img src="./images/f_logo_RGB-Hex-Blue_512.png"></td>
+                    <td><img src="./storage/icons/${decryptedDatabase[i].icon}" onerror="this.onerror=null; this.src='./storage/icons/default.png'"></td>
                     <td>${decryptedDatabase[i].service}</td>
                     <td>${decryptedDatabase[i].login}</td>
                     <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><input type="checkbox" onclick="myFunction(${i})">Show</td>

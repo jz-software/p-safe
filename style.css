@@ -35,8 +35,9 @@ table tr{
 
 table tr td img{
     display: flex;
-    width: 40px;
-    padding-left: 10%;
+    width: 46px;
+    height: 46px;
+    border-radius: 3px;
 }
 
 table tr td i{
