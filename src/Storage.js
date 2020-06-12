@@ -3,6 +3,8 @@ class Storage{
         
     }
     user;
+
+    // Saves an object in a JSON file.
     saveJSON(myObject, path){
         var fs = require('fs');
         var data = JSON.stringify(myObject);
@@ -16,12 +18,16 @@ class Storage{
         console.log('Data saved successfully.')
         });
     }
+
+    // Encrypts a string using Cryptr
     encryptString(string, password){
         const Cryptr = require('cryptr');
         const cryptr = new Cryptr(password);
         
         return cryptr.encrypt(string);
     }
+
+    // Finds index in array of objects using an attribute
     findWithAttr(array, attr, value) {
         for(var i = 0; i < array.length; i += 1) {
             if(array[i][attr] === value) {
@@ -30,10 +36,14 @@ class Storage{
         }
         return -1;
     }
+
+    // Finds an user and returns its index
+    // If user is not found then returns -1
     findUser(service, name){
         const userIndex = this.findWithAttr(require('../storage/passwords.json'), "user", name);
         return userIndex;
     }
+
     // Merges the password dataset with the entire database before saving it to JSON
     // Must be always used before saving or loss of data will occur
     mergeDatabase(dataset){
@@ -44,6 +54,7 @@ class Storage{
         database[index].passwords = dataset;
         return database;
     }
+
     savePassword(dataset, service, login, toStore, password){
         const saveData = {
             service: service,
@@ -90,6 +101,7 @@ class Storage{
         database.push(data);
         this.saveJSON(database, './storage/passwords.json');
     }
+
     // Checks the hash and returns true or false
     validateUser(name, password){
         const bcrypt = require('bcrypt');
