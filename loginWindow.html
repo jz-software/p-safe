@@ -22,19 +22,21 @@
             <br>
             <input type="submit">
         </form> -->
-        <div class="circles">
-            <div>
-                <i class="fas fa-user-circle"></i>
-                <br><br>
-                <input id="login" type="text" placeholder="user" spellcheck="false">
-            </div>    
-        </div>
 
         <script>
             const electron = require('electron');
             const {ipcRenderer} = electron;
             let data = [];
         </script>
+
+        <div class="circles">
+            <div>
+                <i class="fas fa-user-circle"></i>
+                <br><br>
+                <input id="login" type="text" placeholder="username" spellcheck="false">
+                <p>Don't have an account? <span onclick="ipcRenderer.send('user:create')">Sign up</span></p>
+            </div>    
+        </div>
 
         <script>
             // Get the input field
