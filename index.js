@@ -41,7 +41,7 @@ app.on('ready', function(){
         }
     });
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'loginWindow.html'),
+        pathname: path.join(__dirname, './src/Login/loginWindow.html'),
         protocol: 'file',
         slashes: true
     }));
@@ -58,7 +58,7 @@ ipcMain.on('password:add', function(e, item){
     //mainWindow.webContents.send('password:add', item);
     storage.savePassword(dataset, item.service, item.login, item.password, item.icon ,mainPassword);
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'mainWindow.html'),
+        pathname: path.join(__dirname, './src/Main/mainWindow.html'),
         protocol: 'file',
         slashes: true
     }));
@@ -80,7 +80,7 @@ ipcMain.on('user:login', function(e, item){
         storage.user = item.login;
         mainPassword = item.password; 
         mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'mainWindow.html'),
+            pathname: path.join(__dirname, './src/Main/mainWindow.html'),
             protocol: 'file',
             slashes: true
         }));
@@ -92,7 +92,7 @@ ipcMain.on('user:login', function(e, item){
 ipcMain.on('user:register', function(e, item){
     storage.createUser(item.login, item.email, item.password)
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'loginWindow.html'),
+        pathname: path.join(__dirname, './src/Login/loginWindow.html'),
         protocol: 'file',
         slashes: true
     }));
@@ -120,14 +120,14 @@ ipcMain.on('user:info', function(e){
 // Main Page
 ipcMain.on('password:create', function(e){
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'createPassword.html'),
+        pathname: path.join(__dirname, './src/Password/createPassword.html'),
         protocol: 'file',
         slashes: true
     }));
 });
 ipcMain.on('user:create', function(e){
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'createUser.html'),
+        pathname: path.join(__dirname, './src/User/createUser.html'),
         protocol: 'file',
         slashes: true
     }));
