@@ -4,26 +4,8 @@ const Storage = require('./src/Storage')
 const storage = new Storage();
 let dataset;
 
-function findWithAttr(array, attr, value) {
-    for(var i = 0; i < array.length; i += 1) {
-        if(array[i][attr] === value) {
-            return i;
-        }
-    }
-    return -1;
-}
-function findService(service){
-    const serviceIndex = findWithAttr(dataset, "service", service);
-    return serviceIndex;
-}
-
 let mainPassword = "";
 storage.findUser();
-
-// Storage interaction
-//storage.savePassword(dataset, "GitHub", "passwordToStore", "mainPassword");
-//storage.removePassword(dataset, findService("GitHub"));
-//storage.changePassword(dataset, findService("GitHub"), "newPassword", "mainPassword");
 
 const electron = require('electron');
 const url = require('url');
@@ -32,7 +14,6 @@ const path = require('path');
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 
 let mainWindow;
-let addWindow;
 
 app.on('ready', function(){
     mainWindow = new BrowserWindow({
@@ -53,9 +34,7 @@ app.on('ready', function(){
     Menu.setApplicationMenu(mainMenu);
 });
 
-// Catch item:add
 ipcMain.on('password:add', function(e, item){
-    //mainWindow.webContents.send('password:add', item);
     storage.savePassword(dataset, item.service, item.login, item.password, item.icon ,mainPassword);
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, './src/Main/mainWindow.html'),
@@ -63,7 +42,7 @@ ipcMain.on('password:add', function(e, item){
         slashes: true
     }));
 });
-// Catch item:add
+
 ipcMain.on('password:delete', function(e, item){
     console.log("Password deleted")
     storage.removePassword(dataset, item.index);
