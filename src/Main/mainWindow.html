@@ -3,6 +3,7 @@
     <head>
         <title>P-Safe</title>
         <link rel="stylesheet" type="text/css" href="./mainWindow.css">
+        <link rel="stylesheet" type="text/css" href="../Sidenav/sidenav.css">
         <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -22,12 +23,8 @@
             })
         </script>
 
-        <!-- Side navigation -->
         <div class="sidenav">
-            <a><i class="fas fa-plus-circle" onclick="ipcRenderer.send('password:create');"></i></a>
-            <a><i class="fas fa-user" onclick="ipcRenderer.send('user:create');"></i></a>
-            <a><i class="fas fa-bookmark"></i></a>
-            <a><i class="fas fa-sliders-h"></i></a>
+            <script src="../Sidenav/sidenav.js"></script>
         </div>
 
         <div class="main">

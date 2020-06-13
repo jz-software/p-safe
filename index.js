@@ -145,6 +145,13 @@ ipcMain.on('password:choosePicture', function(e){
       })
       
 });
+ipcMain.on('page:home', function(e){
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, './src/Main/mainWindow.html'),
+        protocol: 'file',
+        slashes: true
+    }));
+});
 
 
 // Update window
