@@ -2,6 +2,7 @@
 ![Node.js CI](https://github.com/jz-software/p-safe/workflows/Node.js%20CI/badge.svg?branch=master)
 
 Store your passwords securely.
+![](https://i.imgur.com/LccgsXR.png)
 
 ## Installation
 
