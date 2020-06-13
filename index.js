@@ -4,9 +4,6 @@ const Storage = require('./src/Storage')
 const storage = new Storage();
 let dataset;
 
-let mainPassword = "";
-storage.findUser();
-
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
@@ -35,7 +32,7 @@ app.on('ready', function(){
 });
 
 ipcMain.on('password:add', function(e, item){
-    storage.savePassword(dataset, item.service, item.login, item.password, item.icon ,mainPassword);
+    storage.savePassword(dataset, item.service, item.login, item.password, item.icon);
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, './src/Main/mainWindow.html'),
         protocol: 'file',
@@ -57,7 +54,7 @@ ipcMain.on('user:login', function(e, item){
         dataset = rawDataset[storage.findUser('user', item.login)].passwords;
         rawDataset = null;
         storage.user = item.login;
-        mainPassword = item.password; 
+        storage.password = item.password; 
         mainWindow.loadURL(url.format({
             pathname: path.join(__dirname, './src/Main/mainWindow.html'),
             protocol: 'file',
@@ -135,7 +132,7 @@ ipcMain.on('page:home', function(e){
 
 // Update window
 function updateWindow(){
-    mainWindow.webContents.send('password:update', storage.decryptAll(dataset, mainPassword));
+    mainWindow.webContents.send('password:update', storage.decryptAll(dataset));
 }
 
 const mainMenuTemplate = [];

@@ -3,6 +3,7 @@ class Storage{
         
     }
     user;
+    password;
 
     // Saves an object in a JSON file.
     saveJSON(myObject, path){
@@ -65,14 +66,14 @@ class Storage{
         return result;
     }
      
-    savePassword(dataset, service, login, toStore, icon, password){
+    savePassword(dataset, service, login, toStore, icon){
         const fs = require('fs');
         const path = require('path');
 
         const saveData = {
             service: service,
             login: login,
-            password: this.encryptString(toStore, password),
+            password: this.encryptString(toStore, this.password),
             icon: `${this.makeString(32)}.${path.extname(icon)}`
         }
 
@@ -102,9 +103,9 @@ class Storage{
         this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json');
 
     }
-    decryptAll(dataset, password){
+    decryptAll(dataset){
         const Cryptr = require('cryptr');
-        const cryptr = new Cryptr(password);
+        const cryptr = new Cryptr(this.password);
 
         const decrypted = [];
         for(let i=0; i<dataset.length; i++){
