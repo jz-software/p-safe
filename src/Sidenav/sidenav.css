@@ -31,3 +31,8 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
 }
+
+.main {
+    margin-left: 70px;
+    padding: 0px 10px;
+}

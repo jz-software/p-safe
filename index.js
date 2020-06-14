@@ -3,6 +3,7 @@ const Storage = require('./src/Storage')
 
 const storage = new Storage();
 let dataset;
+let user;
 
 const electron = require('electron');
 const url = require('url');
@@ -32,7 +33,7 @@ app.on('ready', function(){
 });
 
 ipcMain.on('password:add', function(e, item){
-    storage.savePassword(dataset, item.service, item.login, item.password, item.icon);
+    storage.savePassword(dataset.passwords, item.service, item.login, item.password, item.icon);
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, './src/Main/mainWindow.html'),
         protocol: 'file',
@@ -42,7 +43,7 @@ ipcMain.on('password:add', function(e, item){
 
 ipcMain.on('password:delete', function(e, item){
     console.log("Password deleted")
-    storage.removePassword(dataset, item.index);
+    storage.removePassword(dataset.passwords, item.index);
     updateWindow();
 });
 ipcMain.on('password:update', function(e){
@@ -51,10 +52,15 @@ ipcMain.on('password:update', function(e){
 ipcMain.on('user:login', function(e, item){
     const auth = storage.validateUser(item.login, item.password);
     if(auth==true){
-        dataset = rawDataset[storage.findUser('user', item.login)].passwords;
+        storage.password = item.password;
+        dataset = rawDataset[storage.findUser('user', item.login)];
+        user = {
+            nickname: rawDataset[storage.findUser('user', item.login)].user,
+            email: storage.decryptString(rawDataset[storage.findUser('user', item.login)].email)
+        }
+        console.log(user)
         rawDataset = null;
         storage.user = item.login;
-        storage.password = item.password; 
         mainWindow.loadURL(url.format({
             pathname: path.join(__dirname, './src/Main/mainWindow.html'),
             protocol: 'file',
@@ -128,11 +134,26 @@ ipcMain.on('page:home', function(e){
         slashes: true
     }));
 });
-
+ipcMain.on('page:profile', function(){
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, './src/User/manage.html'),
+        protocol: 'file',
+        slashes: true
+    }));
+})
+ipcMain.on('page:profile:info', function(){
+    mainWindow.webContents.send('page:profile:info:send', {user: dataset.user, email: storage.decryptString(dataset.email, storage.password)});
+})
+ipcMain.on('page:profile:save', function(e, userData){
+    storage.changeUser(userData, dataset)
+    let rawDataset = require('./storage/passwords.json');
+    dataset = rawDataset[storage.findUser('user', userData.login)];
+    rawDataset = null;
+})
 
 // Update window
 function updateWindow(){
-    mainWindow.webContents.send('password:update', storage.decryptAll(dataset));
+    mainWindow.webContents.send('password:update', storage.decryptAll(dataset.passwords));
 }
 
 const mainMenuTemplate = [];

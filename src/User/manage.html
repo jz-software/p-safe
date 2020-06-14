@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>My Profile</title>
+        <link rel="stylesheet" type="text/css" href="./manage.css">
+        <link rel="stylesheet" type="text/css" href="../Sidenav/sidenav.css">
+        <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+        </script>
+
+        <div class="sidenav">
+            <script src="../Sidenav/sidenav.js"></script>
+        </div>
+        <div class="main">
+            <div class="main-info">
+                <img src="../../storage/icons/default.png">
+                <br><br>
+                <input id="login" type="text" spellcheck="false" value="nickname">
+                <hr>
+                <div class="secondary-info">
+                    <table cellspacing="0" cellpadding="10" class="passwords" width=100%>
+                        <tr>
+                            <td style="float: left">
+                                <label>email:</label><input id="email" type="text" spellcheck="false" value="e-mail">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button onclick="saveUser()">SAVE</button>
+            </div>  
+        </div>
+
+        <script>
+            ipcRenderer.on('page:profile:info:send', function(e, user){
+                document.querySelector('#login').value = user.user;
+                document.querySelector('#email').value = user.email;
+                console.log(user)
+            })
+            ipcRenderer.send('page:profile:info');
+
+            function saveUser(){
+                const user = {
+                    login: document.querySelector('#login').value,
+                    email: document.querySelector('#email').value
+                }
+                console.log(user)
+                ipcRenderer.send('page:profile:save', user);
+            }
+        </script>
+    </body>
+</html>

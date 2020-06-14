@@ -27,6 +27,12 @@ class Storage{
         
         return cryptr.encrypt(string);
     }
+    decryptString(string, password){
+        const Cryptr = require('cryptr');
+        const cryptr = new Cryptr(password);
+        
+        return cryptr.decrypt(string);
+    }
 
     // Finds index in array of objects using an attribute
     findWithAttr(array, attr, value) {
@@ -53,6 +59,15 @@ class Storage{
         console.log(index)
 
         database[index].passwords = dataset;
+        return database;
+    }
+    mergeUser(dataset){
+        const database = require('../storage/passwords.json');
+        console.log(database)
+        const index = this.findUser('user', this.user);
+        console.log(index)
+
+        database[index] = dataset;
         return database;
     }
 
@@ -119,6 +134,12 @@ class Storage{
         }        
         return decrypted;
     }
+    decryptString(string){
+        const Cryptr = require('cryptr');
+        const cryptr = new Cryptr(this.password);
+
+        return cryptr.decrypt(string);
+    }
     createUser(name, email, password){
         const bcrypt = require('bcrypt');
         const data = {
@@ -153,6 +174,14 @@ class Storage{
             userArray.push(database[i].user)
         }
         return userArray;
+    }
+    changeUser(user, dataset){
+        dataset.user = user.login;
+        dataset.email = this.encryptString(user.email, this.password);
+
+        this.user = user.login;
+
+        this.saveJSON(this.mergeUser(dataset), './storage/passwords.json');
     }
 
 }
