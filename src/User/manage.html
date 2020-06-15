@@ -16,7 +16,7 @@
         </div>
         <div class="main">
             <div class="main-info">
-                <img id="profile-pic" onclick="ipcRenderer.send('password:choosePicture')" src="../../storage/icons/default.png">
+                <img id="profile-pic" onclick="ipcRenderer.send('password:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
                 <br><br>
                 <input id="login" type="text" spellcheck="false" value="nickname">
                 <hr>
@@ -38,7 +38,6 @@
                 document.querySelector('#login').value = user.user;
                 document.querySelector('#email').value = user.email;
                 document.querySelector('#profile-pic').setAttribute('src', `../../storage/icons/${user.picture}`);
-                console.log(user)
             })
             ipcRenderer.send('page:profile:info');
 
@@ -52,7 +51,6 @@
                     email: document.querySelector('#email').value,
                     picture: document.querySelector('#profile-pic').getAttribute('src')
                 }
-                console.log(user)
                 ipcRenderer.send('page:profile:save', user);
             }
         </script>

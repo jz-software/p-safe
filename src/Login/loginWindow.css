@@ -17,9 +17,20 @@ body{
     color: #929292;
 }
 
+.circles img{
+    height: 30vh;
+    border-radius: 100px;
+}
+
 .circles div{
     display: block;
     text-align: center;
+}
+
+.circles div .profile-pic{
+    display: flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .circles div input{

@@ -82,14 +82,16 @@ ipcMain.on('user:register', function(e, item){
 ipcMain.on('user:checkLogin', function(e, item){
     const allUsers = storage.getAllUsers();
     let output = false;
+    let userData;
 
     for(let i=0; i<allUsers.length; i++){
         if(allUsers[i]==item.username){
             output = true;
+            userData = require('./storage/passwords.json')[i].picture;
         }
     }
     if(output==true){
-        mainWindow.webContents.send('user:valid');
+        mainWindow.webContents.send('user:valid', userData);
     }  
     else{
         mainWindow.webContents.send('user:wrong');

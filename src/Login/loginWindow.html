@@ -31,7 +31,7 @@
 
         <div class="circles">
             <div>
-                <i class="fas fa-user-circle"></i>
+                <div class="profile-pic"><i id='profile-pic-i' class="fas fa-user-circle"></i><img id="profile-pic" src=""></div>
                 <br><br>
                 <input id="login" type="text" placeholder="username" spellcheck="false">
                 <p>Don't have an account? <span onclick="ipcRenderer.send('user:create')">Sign up</span></p>
@@ -42,10 +42,12 @@
             // Get the input field
             var input = document.getElementById("login");
 
-            ipcRenderer.on('user:valid', function(e){
+            ipcRenderer.on('user:valid', function(e, userData){
                 input.value = "";
                 input.setAttribute('placeholder', 'password')
                 input.style.borderBottom = "1px solid #1EB584";
+                document.querySelector('#profile-pic').setAttribute('src', `../../storage/icons/${userData}`);
+                document.querySelector('#profile-pic-i').setAttribute('class', '')
             })
             ipcRenderer.on('user:wrong', function(e){
                 data = [];
