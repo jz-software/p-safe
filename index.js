@@ -142,7 +142,10 @@ ipcMain.on('page:profile', function(){
     }));
 })
 ipcMain.on('page:profile:info', function(){
-    mainWindow.webContents.send('page:profile:info:send', {user: dataset.user, email: storage.decryptString(dataset.email, storage.password)});
+    mainWindow.webContents.send('page:profile:info:send', {
+        user: dataset.user, 
+        email: storage.decryptString(dataset.email, storage.password), 
+        picture: dataset.picture});
 })
 ipcMain.on('page:profile:save', function(e, userData){
     storage.changeUser(userData, dataset)

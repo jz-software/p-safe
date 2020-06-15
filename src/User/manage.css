@@ -15,6 +15,13 @@ body{
 
 .main div img{
     height: 100px;
+    width: 100px;
+    border-radius: 20px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+.main div img:hover{
+    opacity: 0.5;
 }
 
 .main div hr{

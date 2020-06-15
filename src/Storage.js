@@ -80,6 +80,16 @@ class Storage{
         }
         return result;
     }
+
+    copyPicture(originalPath, newPath){
+        const fs = require('fs');
+        const path = require('path');
+
+        fs.copyFile(originalPath, `./storage/icons/${newPath}`, (err) => {
+            if (err) throw err;
+            console.log('Icon was copied to ./icons/');
+        });
+    }
      
     savePassword(dataset, service, login, toStore, icon){
         const fs = require('fs');
@@ -92,10 +102,7 @@ class Storage{
             icon: `${this.makeString(32)}.${path.extname(icon)}`
         }
 
-        fs.copyFile(icon, `./storage/icons/${saveData.icon}`, (err) => {
-            if (err) throw err;
-            console.log('Icon was copied to ./icons/');
-        });
+        this.copyPicture(icon, saveData.icon);
 
         dataset.push(saveData)
 
@@ -140,11 +147,12 @@ class Storage{
 
         return cryptr.decrypt(string);
     }
-    createUser(name, email, password){
+    createUser(name, email, icon, password){
         const bcrypt = require('bcrypt');
         const data = {
             user: name,
             email: this.encryptString(email, password),
+            icon: "k",
             password: bcrypt.hashSync(password, 10),
             passwords: []
         }
@@ -179,6 +187,19 @@ class Storage{
         dataset.user = user.login;
         dataset.email = this.encryptString(user.email, this.password);
 
+
+        // Deletes previous picture
+        const fs = require('fs')
+        try {
+            fs.unlinkSync(`./storage/icons/${dataset.picture}`)
+        } catch(err) {
+            console.error(err)
+        }
+          
+
+        const path = require('path');
+        dataset.picture = `${this.makeString(32)}.${path.extname(user.picture)}`
+        this.copyPicture(user.picture, dataset.picture);
         this.user = user.login;
 
         this.saveJSON(this.mergeUser(dataset), './storage/passwords.json');
