@@ -152,7 +152,7 @@ class Storage{
         const data = {
             user: name,
             email: this.encryptString(email, password),
-            icon: "k",
+            icon: icon,
             password: bcrypt.hashSync(password, 10),
             passwords: []
         }
