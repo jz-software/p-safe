@@ -15,7 +15,6 @@ body{
 
 .main div img{
     height: 100px;
-    width: 100px;
     border-radius: 20px;
     transition: 0.2s;
     cursor: pointer;

@@ -31,7 +31,10 @@
 
         <div class="circles">
             <div>
-                <div class="profile-pic"><i id='profile-pic-i' class="fas fa-user-circle"></i><img id="profile-pic" src=""></div>
+                <div class="profile-pic">
+                    <i id='profile-pic-i' class="fas fa-user-circle"></i>
+                    <img id="profile-pic" src="" onerror="imgLoadFailed()">
+                </div>
                 <br><br>
                 <input id="login" type="text" placeholder="username" spellcheck="false">
                 <p>Don't have an account? <span onclick="ipcRenderer.send('user:create')">Sign up</span></p>
@@ -42,9 +45,14 @@
             // Get the input field
             var input = document.getElementById("login");
 
+            function imgLoadFailed(){
+                document.querySelector('#profile-pic').setAttribute('src', ``);
+                document.querySelector('#profile-pic-i').setAttribute('class', 'fas fa-user-circle')
+            }
             ipcRenderer.on('user:valid', function(e, userData){
                 input.value = "";
-                input.setAttribute('placeholder', 'password')
+                input.setAttribute('placeholder', 'password');
+                input.setAttribute('type', 'password');
                 input.style.borderBottom = "1px solid #1EB584";
                 document.querySelector('#profile-pic').setAttribute('src', `../../storage/icons/${userData}`);
                 document.querySelector('#profile-pic-i').setAttribute('class', '')
@@ -65,29 +73,28 @@
                 event.preventDefault();
                 // Trigger the button element with a click
                 data.push(document.querySelector('#login').value);
-                if(data.length>0){
+                if(data.length==1){
                     const item = {
                         username: document.querySelector('#login').value
                     }
                     ipcRenderer.send('user:checkLogin', item);
                 }
-                if(data.length>1){
+                if(data.length==2){
                     const item = {
                         login: data[0],
                         password: data[1]
                     }    
                     ipcRenderer.send('user:login', item);
-                    data.pop();
-                    input.setAttribute('placeholder', 'password')
                 }
             }
             }); 
         </script>
 
         <script>
-            ipcRenderer.on('user:login:wrong', function(e, decryptedDatabase){
+            ipcRenderer.on('user:login:wrong', function(e){
+                data.pop();
                 const input = document.querySelector('#login');
-                input.setAttribute('placeholder', 'Try again')
+                input.setAttribute('placeholder', 'Try again');
                 input.style.borderBottom = "1px solid red";
             })
 

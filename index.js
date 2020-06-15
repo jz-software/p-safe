@@ -68,7 +68,7 @@ ipcMain.on('user:login', function(e, item){
         }));
     }
     else{
-        mainWindow.webContents.send('user:login:wrong', "hi");
+        mainWindow.webContents.send('user:login:wrong');
     }
 });
 ipcMain.on('user:register', function(e, item){
