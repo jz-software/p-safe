@@ -16,19 +16,28 @@
         </div>
         <div class="main">
             <div class="main-info">
-                <img id="profile-pic" onclick="ipcRenderer.send('password:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
-                <br><br>
-                <input id="login" type="text" spellcheck="false" value="nickname">
-                <hr>
-                <div class="secondary-info">
-                    <table cellspacing="0" cellpadding="10" class="passwords" width=100%>
+                <div class="first-info">
+                    <img id="profile-pic" onclick="ipcRenderer.send('password:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
+                    <div>
+                        <h1 id="nickname"></h1>
+                        <p onclick="ipcRenderer.send('password:choosePicture')">Change Profile Picture</p>
+                    </div>    
+                </div>    
+                <div class="other-info">
+                    <table cellspacing="0" cellpadding="10" class="passwords">
                         <tr>
-                            <td style="float: left">
-                                <label>email:</label><input id="email" type="text" spellcheck="false" value="e-mail">
-                            </td>
+                            <td class="aside"><label for="nickname">Nickname</label></td>
+                            <td class="content"><input id="login" value="" spellcheck="false"></td>
+                        </tr>
+                        <tr>
+                            <td class="aside"><label for="email">Email</label></td>
+                            <td class="content"><input id="email" value="" spellcheck="false"></td>
                         </tr>
                     </table>
                 </div>
+                <br>
+                <br>
+
                 <button onclick="saveUser()">SAVE</button>
             </div>  
         </div>
@@ -38,6 +47,7 @@
                 document.querySelector('#login').value = user.user;
                 document.querySelector('#email').value = user.email;
                 document.querySelector('#profile-pic').setAttribute('src', `../../storage/icons/${user.picture}`);
+                document.querySelector('#nickname').textContent = user.user;
             })
             ipcRenderer.send('page:profile:info');
 
