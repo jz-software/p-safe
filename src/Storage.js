@@ -63,9 +63,7 @@ class Storage{
     }
     mergeUser(dataset){
         const database = require('../storage/passwords.json');
-        console.log(database)
         const index = this.findUser('user', this.user);
-        console.log(index)
 
         database[index] = dataset;
         return database;
@@ -200,6 +198,13 @@ class Storage{
         const path = require('path');
         dataset.picture = `${this.makeString(32)}.${path.extname(user.picture)}`
         this.copyPicture(user.picture, dataset.picture);
+
+        try {
+            fs.unlinkSync(user.picture)
+        } catch(err) {
+            console.error(err)
+        }
+          
         this.user = user.login;
 
         this.saveJSON(this.mergeUser(dataset), './storage/passwords.json');

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./cropper.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.min.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js"></script>
+
+        <div class="container">
+            <div>
+            <img id="image" src="" alt="Picture">
+            </div>
+            <p>
+            <button type="button" id="button">Crop</button>
+            </p>
+            <div id="result"></div>
+        </div>
+
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+        </script>
+
+        <script>
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            var picPath = url.searchParams.get("path");
+            document.querySelector('#image').setAttribute('src', picPath)
+        </script>
+
+        <script>
+            function getRoundedCanvas(sourceCanvas) {
+              var canvas = document.createElement('canvas');
+              var context = canvas.getContext('2d');
+              var width = sourceCanvas.width;
+              var height = sourceCanvas.height;
+        
+              canvas.width = width;
+              canvas.height = height;
+              context.imageSmoothingEnabled = true;
+              context.drawImage(sourceCanvas, 0, 0, width, height);
+              context.globalCompositeOperation = 'destination-in';
+              context.beginPath();
+              context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+              context.fill();
+              return canvas;
+            }
+        
+            window.addEventListener('DOMContentLoaded', function () {
+              var image = document.getElementById('image');
+              var button = document.getElementById('button');
+              var result = document.getElementById('result');
+              var croppable = false;
+              var cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                ready: function () {
+                  croppable = true;
+                },
+              });
+        
+              button.onclick = function () {
+                var croppedCanvas;
+                var roundedCanvas;
+                var roundedImage;
+        
+                if (!croppable) {
+                  return;
+                }
+        
+                // Crop
+                croppedCanvas = cropper.getCroppedCanvas();
+        
+                // Round
+                roundedCanvas = getRoundedCanvas(croppedCanvas);
+        
+                // Show
+                roundedImage = document.createElement('img');
+                roundedImage.src = roundedCanvas.toDataURL()
+                ipcRenderer.send('page:cropper:cropped', roundedCanvas.toDataURL())
+                /*
+                result.innerHTML = '';
+                result.appendChild(roundedImage);*/
+              };
+            });
+          </script>
+    </body>
+</html>

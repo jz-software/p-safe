@@ -1,0 +1,12 @@
+.container {
+    margin: 20px auto;
+    max-width: 640px;
+}
+
+img {
+    max-width: 30%;
+}
+
+.cropper-view-box, .cropper-face {
+    border-radius: 50%;
+}

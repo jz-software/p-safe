@@ -42,8 +42,12 @@
             ipcRenderer.send('page:profile:info');
 
             ipcRenderer.on('password:picture', function(e, path){
-                document.querySelector('#profile-pic').setAttribute('src', path)
+                ipcRenderer.send('page:cropper', path);
             })
+
+            ipcRenderer.on('page:cropper:out', function(e, picPath){
+                document.querySelector('#profile-pic').setAttribute('src', picPath);
+            });
 
             function saveUser(){
                 const user = {

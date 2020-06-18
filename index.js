@@ -12,6 +12,7 @@ const path = require('path');
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 
 let mainWindow;
+let child;
 
 app.on('ready', function(){
     mainWindow = new BrowserWindow({
@@ -120,7 +121,6 @@ ipcMain.on('user:create', function(e){
 ipcMain.on('password:choosePicture', function(e){
     dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'], filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]}).then(result => {
         if(result.canceled==false){
-            console.log(result.filePaths)
             mainWindow.webContents.send('password:picture', result.filePaths[0]);
         }
 
@@ -155,6 +155,40 @@ ipcMain.on('page:profile:save', function(e, userData){
     dataset = rawDataset[storage.findUser('user', userData.login)];
     rawDataset = null;
 })
+ipcMain.on('page:cropper', function(e, picPath){
+    child = new BrowserWindow({ parent: mainWindow, modal: true, show: false, width: 600, height: 500,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    })
+    child.loadURL(url.format({
+        pathname: path.join(__dirname, `./src/Picture/cropper.html`),
+        protocol: 'file',
+        slashes: true
+    })+'?path='+picPath);
+    child.once('ready-to-show', () => {
+      child.show()
+    })
+});
+ipcMain.on('page:cropper:cropped', function(e, img){
+    child.close();
+    child = null;
+
+    var base64Data = img.replace(/^data:image\/png;base64,/, "");
+
+    //dataset.picture = `${this.makeString(32)}.${path.extname(user.picture)}`
+    //s.copyPicture(user.picture, dataset.picture);
+
+    const tempName = storage.makeString(32) + '.png';
+
+    require("fs").writeFile('./storage/icons/'+tempName, base64Data, 'base64', function(err) {
+        console.log(err);
+    });
+
+
+    mainWindow.webContents.send('page:cropper:out', `${__dirname}/storage/icons/${tempName}`);
+
+});
 
 // Update window
 function updateWindow(){
