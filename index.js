@@ -154,6 +154,7 @@ ipcMain.on('page:profile:save', function(e, userData){
     let rawDataset = require('./storage/passwords.json');
     dataset = rawDataset[storage.findUser('user', userData.login)];
     rawDataset = null;
+    mainWindow.reload();
 })
 ipcMain.on('page:cropper', function(e, picPath){
     child = new BrowserWindow({ parent: mainWindow, modal: true, show: false, width: 600, height: 500,

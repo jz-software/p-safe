@@ -50,6 +50,14 @@ body{
     display: flex;
     font-family: 'Roboto', sans-serif;
 }
+.main .first-info h1{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+     user-select: none; ;
+}    
 
 .main .first-info div{
     padding: 0% 0% 0% 5%;
@@ -75,6 +83,22 @@ body{
 }
 .main .other-info table tr .content{
     text-align: left;
+}
+.main .other-info table tr .content .submit{
+    margin-top: 10%;
+    background-color: #7289da;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}    
+.main .other-info table tr .content .submit:hover{
+    background-color: #50619e;
 }
 
 .main .main-info .secondary-info{

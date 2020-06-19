@@ -185,25 +185,31 @@ class Storage{
         dataset.user = user.login;
         dataset.email = this.encryptString(user.email, this.password);
 
-
-        // Deletes previous picture
-        const fs = require('fs')
-        try {
-            fs.unlinkSync(`./storage/icons/${dataset.picture}`)
-        } catch(err) {
-            console.error(err)
+        if(user.picture.changed=='true'){
+            // Deletes previous picture
+            const fs = require('fs')
+            try {
+                fs.unlinkSync(`./storage/icons/${dataset.picture}`)
+            } catch(err) {
+                console.error(err)
+            }
         }
-          
-
-        const path = require('path');
-        dataset.picture = `${this.makeString(32)}.${path.extname(user.picture)}`
-        this.copyPicture(user.picture, dataset.picture);
-
-        try {
-            fs.unlinkSync(user.picture)
-        } catch(err) {
-            console.error(err)
+        
+        if(user.picture.changed=='true'){
+            // Deletes copy
+            try {
+                fs.unlinkSync(user.picture.path)
+            } catch(err) {
+                console.error(err)
+            }
+            const path = require('path');
+            dataset.picture = `${this.makeString(32)}.${path.extname(user.picture.path)}`
+            this.copyPicture(user.picture.path, dataset.picture);    
         }
+        else{
+            dataset.picture = dataset.picture;
+        }
+
           
         this.user = user.login;
 
