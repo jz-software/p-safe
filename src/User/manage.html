@@ -17,7 +17,7 @@
         <div class="main">
             <div class="main-info">
                 <div class="first-info">
-                    <img id="profile-pic" changed="false" onclick="ipcRenderer.send('password:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
+                    <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('password:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
                     <div>
                         <h1 id="nickname"></h1>
                         <p onclick="ipcRenderer.send('password:choosePicture')">Change Profile Picture</p>
@@ -48,7 +48,7 @@
             ipcRenderer.on('page:profile:info:send', function(e, user){
                 document.querySelector('#login').value = user.user;
                 document.querySelector('#email').value = user.email;
-                document.querySelector('#profile-pic').setAttribute('src', `../../storage/icons/${user.picture}`);
+                document.querySelector('#profile-pic').setAttribute('src', `../../${user.picture}`);
                 document.querySelector('#nickname').textContent = user.user;
             })
             ipcRenderer.send('page:profile:info');
@@ -58,7 +58,8 @@
             })
 
             ipcRenderer.on('page:cropper:out', function(e, picPath){
-                document.querySelector('#profile-pic').setAttribute('src', picPath);
+                document.querySelector('#profile-pic').setAttribute('src', '../../'+picPath);
+                document.querySelector('#profile-pic').setAttribute('realPath', picPath);
                 document.querySelector('#profile-pic').setAttribute('changed', 'true');
             });
 
@@ -66,8 +67,10 @@
                 const user = {
                     login: document.querySelector('#login').value,
                     email: document.querySelector('#email').value,
-                    picture: {changed: document.querySelector('#profile-pic').getAttribute('changed'), 
-                        path: document.querySelector('#profile-pic').getAttribute('src')}
+                    picture: {
+                        changed: document.querySelector('#profile-pic').getAttribute('changed'), 
+                        path: document.querySelector('#profile-pic').getAttribute('realPath'),
+                    }
                 }
                 ipcRenderer.send('page:profile:save', user);
             }

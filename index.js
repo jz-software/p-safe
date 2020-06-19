@@ -187,7 +187,7 @@ ipcMain.on('page:cropper:cropped', function(e, img){
     });
 
 
-    mainWindow.webContents.send('page:cropper:out', `${__dirname}/storage/icons/${tempName}`);
+    mainWindow.webContents.send('page:cropper:out', `./storage/icons/${tempName}`);
 
 });
 

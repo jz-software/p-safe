@@ -54,7 +54,7 @@
                 input.setAttribute('placeholder', 'password');
                 input.setAttribute('type', 'password');
                 input.style.borderBottom = "1px solid #1EB584";
-                document.querySelector('#profile-pic').setAttribute('src', `../../storage/icons/${userData}`);
+                document.querySelector('#profile-pic').setAttribute('src', `../../${userData}`);
                 document.querySelector('#profile-pic-i').setAttribute('class', '')
             })
             ipcRenderer.on('user:wrong', function(e){

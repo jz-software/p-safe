@@ -181,35 +181,26 @@ class Storage{
         }
         return userArray;
     }
+    deleteFile(path){
+        const fs = require('fs')        
+        try {
+          fs.unlinkSync(path)
+        } catch(err) {
+          console.error(err)
+        }         
+    }
     changeUser(user, dataset){
         dataset.user = user.login;
         dataset.email = this.encryptString(user.email, this.password);
 
+        // Checks if profile picture was changed, if not then it keeps the previous one
         if(user.picture.changed=='true'){
-            // Deletes previous picture
-            const fs = require('fs')
-            try {
-                fs.unlinkSync(`./storage/icons/${dataset.picture}`)
-            } catch(err) {
-                console.error(err)
-            }
-        }
-        
-        if(user.picture.changed=='true'){
-            // Deletes copy
-            try {
-                fs.unlinkSync(user.picture.path)
-            } catch(err) {
-                console.error(err)
-            }
-            const path = require('path');
-            dataset.picture = `${this.makeString(32)}.${path.extname(user.picture.path)}`
-            this.copyPicture(user.picture.path, dataset.picture);    
+            this.deleteFile(dataset.picture);
+            dataset.picture = user.picture.path;
         }
         else{
             dataset.picture = dataset.picture;
         }
-
           
         this.user = user.login;
 
