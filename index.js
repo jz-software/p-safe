@@ -190,6 +190,18 @@ ipcMain.on('page:cropper:cropped', function(e, img){
     mainWindow.webContents.send('page:cropper:out', `./storage/icons/${tempName}`);
 
 });
+ipcMain.on('page:logout', function(){
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, './src/Login/loginWindow.html'),
+        protocol: 'file',
+        slashes: true
+    }));
+    rawDataset = require('./storage/passwords.json')
+    storage.password = null;
+    dataset = null;
+    user = null;
+    storage.user = null;
+})
 
 // Update window
 function updateWindow(){
