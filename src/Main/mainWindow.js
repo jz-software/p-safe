@@ -9,7 +9,7 @@ function mainWindow(){
             <td><img src="../../storage/icons/${decryptedDatabase[i].icon}" onerror="this.onerror=null; this.src='../../storage/icons/default.png'"></td>
             <td>${decryptedDatabase[i].service}</td>
             <td>${decryptedDatabase[i].login}</td>
-            <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><input type="checkbox" onclick="myFunction(${i})">Show</td>
+            <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><i id="showPass" class="fas fa-eye" onclick="myFunction(${i})"></i></td>
             <td><i class="fas fa-trash" onclick="deletePassword(${i})"></i></td>
             `
             ul.appendChild(li);
@@ -31,8 +31,10 @@ function myFunction(x) {
     var pass = document.querySelectorAll("#pass");
     if (pass[x].type === "password") {
         pass[x].type = "text";
+        document.querySelectorAll('#showPass')[x].setAttribute('class', 'fas fa-low-vision');
     } else {
         pass[x].type = "password";
+        document.querySelectorAll('#showPass')[x].setAttribute('class', 'fas fa-eye');
     }
 } 
 

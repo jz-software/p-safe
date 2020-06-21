@@ -50,6 +50,16 @@ body{
 .main .homepage table tr td i:hover{
     color: rgb(104, 0, 0);
 }
+.main .homepage table tr td #showPass{
+    margin-left: 5px;
+    color: #a8b9be;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+.main .homepage table tr td #showPass:hover{
+    color: #7c888b;
+}
 
 .main .homepage .welcome{
     margin: 1%;
