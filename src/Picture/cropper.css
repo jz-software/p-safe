@@ -1,12 +1,30 @@
+body{
+    background-color: #36393f;
+}
+
 .container {
     margin: 20px auto;
     max-width: 640px;
 }
 
 img {
-    max-width: 30%;
+    height: 70vh;
 }
 
 .cropper-view-box, .cropper-face {
     border-radius: 50%;
+}
+
+button{
+    background-color: #7289da;
+    width: 100%;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }

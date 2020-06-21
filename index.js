@@ -163,6 +163,7 @@ ipcMain.on('page:cropper', function(e, picPath){
         protocol: 'file',
         slashes: true
     })+'?path='+picPath);
+    child.setMenu(null);
     child.once('ready-to-show', () => {
       child.show()
     })
