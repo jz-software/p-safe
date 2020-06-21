@@ -4,6 +4,11 @@
         <title>P-Safe</title>
         <link rel="stylesheet" type="text/css" href="./mainWindow.css">
         <link rel="stylesheet" type="text/css" href="../Sidenav/sidenav.css">
+
+        <!-- Pages styles -->
+        <link rel="stylesheet" type="text/css" href="../Password/createPassword.css">
+        <link rel="stylesheet" type="text/css" href="../User/manage.css">
+        
         <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -13,69 +18,19 @@
             const {ipcRenderer} = electron;
         </script>
 
-        <!--Gets user information-->
-        <script>
-            ipcRenderer.send('user:info');
-
-            ipcRenderer.on('user:infosent', function(e, info){
-                const information = info;
-                document.querySelector(".welcome h1").innerHTML = `Welcome, <span style="color: #7289da">${information}</span>`;
-            })
-        </script>
-
         <div class="sidenav">
             <script src="../Sidenav/sidenav.js"></script>
         </div>
 
+        
+        <script>ipcRenderer.send('page:home')</script>
+
         <div class="main">
-            <!--Welcome Message-->
-            <div class="welcome">
-                <h1>Welcome</h1>
-            </div>
-            
-            <table cellspacing="0" cellpadding="10" class="passwords"></table>
+ 
         </div>
 
-        <script>
-            function myFunction(x) {
-                var pass = document.querySelectorAll("#pass");
-                if (pass[x].type === "password") {
-                    pass[x].type = "text";
-                } else {
-                    pass[x].type = "password";
-                }
-            } 
-        </script>
-        <script>
-            function deletePassword(i){
-                const item = {
-                    index: i
-                }    
-                ipcRenderer.send('password:delete', item);
-            }
-        </script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="../Password/createPassword.js" type="text/javascript"></script>
 
-        <script>
-            const ul = document.querySelector('.passwords');
-            ipcRenderer.on('password:update', function(e, decryptedDatabase){
-                ul.innerHTML = "";
-                for(let i=0; i<decryptedDatabase.length; i++){
-                    const li = document.createElement('tr');
-                    li.innerHTML = 
-                    `
-                    <td><img src="../../storage/icons/${decryptedDatabase[i].icon}" onerror="this.onerror=null; this.src='../../storage/icons/default.png'"></td>
-                    <td>${decryptedDatabase[i].service}</td>
-                    <td>${decryptedDatabase[i].login}</td>
-                    <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><input type="checkbox" onclick="myFunction(${i})">Show</td>
-                    <td><i class="fas fa-trash" onclick="deletePassword(${i})"></i></td>
-                    `
-                    ul.appendChild(li);
-                }
-            })
-
-        </script>
-        <script>
-            ipcRenderer.send('password:update');
-        </script>
     </body>
 </html>

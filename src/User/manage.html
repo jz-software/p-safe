@@ -1,26 +1,15 @@
 <html>
     <head>
         <title>My Profile</title>
-        <link rel="stylesheet" type="text/css" href="./manage.css">
-        <link rel="stylesheet" type="text/css" href="../Sidenav/sidenav.css">
-        <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <script>
-            const electron = require('electron');
-            const {ipcRenderer} = electron;
-        </script>
-
-        <div class="sidenav">
-            <script src="../Sidenav/sidenav.js"></script>
-        </div>
-        <div class="main">
+        <div class="manage">
             <div class="main-info">
                 <div class="first-info">
-                    <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('password:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
+                    <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('cropper:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
                     <div>
                         <h1 id="nickname"></h1>
-                        <p onclick="ipcRenderer.send('password:choosePicture')">Change Profile Picture</p>
+                        <p onclick="ipcRenderer.send('cropper:choosePicture')">Change Profile Picture</p>
                     </div>    
                 </div>    
                 <div class="other-info">
@@ -41,39 +30,7 @@
                 </div>
                 <br>
                 <br>
-            </div>  
+            </div>
         </div>
-
-        <script>
-            ipcRenderer.on('page:profile:info:send', function(e, user){
-                document.querySelector('#login').value = user.user;
-                document.querySelector('#email').value = user.email;
-                document.querySelector('#profile-pic').setAttribute('src', `../../${user.picture}`);
-                document.querySelector('#nickname').textContent = user.user;
-            })
-            ipcRenderer.send('page:profile:info');
-
-            ipcRenderer.on('password:picture', function(e, path){
-                ipcRenderer.send('page:cropper', path);
-            })
-
-            ipcRenderer.on('page:cropper:out', function(e, picPath){
-                document.querySelector('#profile-pic').setAttribute('src', '../../'+picPath);
-                document.querySelector('#profile-pic').setAttribute('realPath', picPath);
-                document.querySelector('#profile-pic').setAttribute('changed', 'true');
-            });
-
-            function saveUser(){
-                const user = {
-                    login: document.querySelector('#login').value,
-                    email: document.querySelector('#email').value,
-                    picture: {
-                        changed: document.querySelector('#profile-pic').getAttribute('changed'), 
-                        path: document.querySelector('#profile-pic').getAttribute('realPath'),
-                    }
-                }
-                ipcRenderer.send('page:profile:save', user);
-            }
-        </script>
     </body>
 </html>

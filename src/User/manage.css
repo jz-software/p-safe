@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-body{
-    background-color: #36393f;
-    padding: 0;
-}
-
-.main{
+.main .manage{
     height: 80vh;
     width: 80vh;
     display:flex;
@@ -14,24 +9,24 @@ body{
     text-align: center;
 }
 
-.main div img{
+.main .manage div img{
     height: 100px;
     transition: 0.2s;
     cursor: pointer;
     margin: 2%;
 }
-.main div img:hover{
+.main .manage div img:hover{
     opacity: 0.5;
 }
 
 
 
-.main div label{
+.main .manage div label{
     font-family: 'Roboto', sans-serif;
     color: #7289da;
 }    
 
-.main div input{
+.main .manage div input{
     background: none;
     border: none;
     transition: 0.3s;
@@ -41,16 +36,16 @@ body{
     font-size: 16px;
 }   
 
-.main div input:focus {
+.main .manage div input:focus {
     outline: none;
     color: #1EB584;
 }
 
-.main .first-info{
+.main .manage .first-info{
     display: flex;
     font-family: 'Roboto', sans-serif;
 }
-.main .first-info h1{
+.main .manage .first-info h1{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -59,32 +54,32 @@ body{
      user-select: none; ;
 }    
 
-.main .first-info div{
+.main .manage .first-info div{
     padding: 0% 0% 0% 5%;
     text-align: left;
 }
 
-.main .first-info div h1{
+.main .manage .first-info div h1{
     color: #929292;
 }    
 
-.main .first-info div p{
+.main .manage .first-info div p{
     color: #7289da;
     cursor: pointer;
 }
 
-.main .other-info{
+.main .manage .other-info{
     text-align: left;
     margin-top: 10%;
 }
 
-.main .other-info table tr .aside{
+.main .manage .other-info table tr .aside{
     text-align: right;
 }
-.main .other-info table tr .content{
+.main .manage .other-info table tr .content{
     text-align: left;
 }
-.main .other-info table tr .content .submit{
+.main .manage .other-info table tr .content .submit{
     margin-top: 10%;
     background-color: #7289da;
     border: none;
@@ -97,16 +92,16 @@ body{
     cursor: pointer;
     transition: 0.3s;
 }    
-.main .other-info table tr .content .submit:hover{
+.main .manage .other-info table tr .content .submit:hover{
     background-color: #50619e;
 }
 
-.main .main-info .secondary-info{
+.main .manage .main-info .secondary-info{
     display: flex;
     flex-wrap: wrap;
     flex-basis: 50%;
 }
 
-.main .main-info .secondary-info p{
+.main .manage .main-info .secondary-info p{
     text-align: right;
 }    

@@ -35,11 +35,7 @@ app.on('ready', function(){
 
 ipcMain.on('password:add', function(e, item){
     storage.savePassword(dataset.passwords, item.service, item.login, item.password, item.icon);
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, './src/Main/mainWindow.html'),
-        protocol: 'file',
-        slashes: true
-    }));
+    mainWindow.webContents.send('page:home');
 });
 
 ipcMain.on('password:delete', function(e, item){
@@ -102,14 +98,10 @@ ipcMain.on('user:info', function(e){
     mainWindow.webContents.send('user:infosent', storage.user);
 });   
 
-// Main Page
 ipcMain.on('password:create', function(e){
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, './src/Password/createPassword.html'),
-        protocol: 'file',
-        slashes: true
-    }));
+    mainWindow.webContents.send('page:password');
 });
+
 ipcMain.on('user:create', function(e){
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, './src/User/createUser.html'),
@@ -129,19 +121,23 @@ ipcMain.on('password:choosePicture', function(e){
       })
       
 });
+ipcMain.on('cropper:choosePicture', function(e){
+    dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'], filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]}).then(result => {
+        if(result.canceled==false){
+            mainWindow.webContents.send('cropper:picture', result.filePaths[0]);
+        }
+
+      }).catch(err => {
+        console.log(err)
+      })
+      
+});
+
 ipcMain.on('page:home', function(e){
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, './src/Main/mainWindow.html'),
-        protocol: 'file',
-        slashes: true
-    }));
+    mainWindow.webContents.send('page:home');
 });
 ipcMain.on('page:profile', function(){
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, './src/User/manage.html'),
-        protocol: 'file',
-        slashes: true
-    }));
+    mainWindow.webContents.send('page:user');
 })
 ipcMain.on('page:profile:info', function(){
     mainWindow.webContents.send('page:profile:info:send', {

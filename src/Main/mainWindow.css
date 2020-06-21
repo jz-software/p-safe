@@ -4,12 +4,13 @@ body{
     background-color: #36393f;
     padding: 0;
 }
-h1{
+
+.main .homepage h1{
     text-align: center;
     font-family: 'Roboto', sans-serif;
 }
 
-table{
+.main .homepage table{
     padding: 0% 1%;
     font-family: 'Roboto', sans-serif;
     width: 100%;
@@ -17,7 +18,7 @@ table{
     border-spacing: 0px 10px;
 }
 
-table tr td input[type=password], select,  table tr td input[type=text]{
+.main .homepage table tr td input[type=password], select,  table tr td input[type=text]{
     padding: 6px 10px;
     margin: 8px 0;
     display: inline-block;
@@ -26,31 +27,31 @@ table tr td input[type=password], select,  table tr td input[type=text]{
     box-sizing: border-box;
 }
 
-table tr{
+.main .homepage table tr{
     background-color: #202225;
     margin-top: 10px;
 }
 
 
 
-table tr td img{
+.main .homepage table tr td img{
     display: flex;
     width: 46px;
     height: 46px;
     border-radius: 3px;
 }
 
-table tr td i{
+.main .homepage table tr td i{
     color: red;
     transition: 0.1s;
     cursor: pointer;
 }
 
-table tr td i:hover{
+.main .homepage table tr td i:hover{
     color: rgb(104, 0, 0);
 }
 
-.welcome{
+.main .homepage .welcome{
     margin: 1%;
     padding: 0.1%;
     background-color: #202225;
