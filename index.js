@@ -179,12 +179,12 @@ ipcMain.on('page:cropper:cropped', function(e, img){
 
     const tempName = storage.makeString(32) + '.png';
 
-    require("fs").writeFile('./storage/icons/'+tempName, base64Data, 'base64', function(err) {
+    require("fs").writeFile('./storage/trash/'+tempName, base64Data, 'base64', function(err) {
         console.log(err);
     });
 
 
-    mainWindow.webContents.send('page:cropper:out', `./storage/icons/${tempName}`);
+    mainWindow.webContents.send('page:cropper:out', `./storage/trash/${tempName}`);
 
 });
 ipcMain.on('page:logout', function(){

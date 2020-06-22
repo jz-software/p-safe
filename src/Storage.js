@@ -189,6 +189,13 @@ class Storage{
           console.error(err)
         }         
     }
+    moveFile(oldPath, newPath){
+        var fs = require('fs');
+        fs.rename(oldPath, newPath, function (err){
+            if (err) throw err;
+            console.log('File moved successfully');
+        });
+    }
     changeUser(user, dataset){
         dataset.user = user.login;
         dataset.email = this.encryptString(user.email, this.password);
@@ -196,7 +203,10 @@ class Storage{
         // Checks if profile picture was changed, if not then it keeps the previous one
         if(user.picture.changed=='true'){
             this.deleteFile(dataset.picture);
-            dataset.picture = user.picture.path;
+            const path = require('path');
+            const storagePath = './storage/icons/'+path.basename(user.picture.path);
+            this.moveFile(user.picture.path, storagePath);
+            dataset.picture = storagePath;
         }
         else{
             dataset.picture = dataset.picture;
