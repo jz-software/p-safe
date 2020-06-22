@@ -63,6 +63,7 @@ ipcMain.on('user:login', function(e, item){
             protocol: 'file',
             slashes: true
         }));
+        mainWindow.webContents.send('page:home');
     }
     else{
         mainWindow.webContents.send('user:login:wrong');
