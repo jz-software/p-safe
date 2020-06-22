@@ -9,9 +9,10 @@ function mainWindow(){
             <td><img src="../../storage/icons/${decryptedDatabase[i].icon}" onerror="this.onerror=null; this.src='../../storage/icons/default.png'"></td>
             <td>${decryptedDatabase[i].service}</td>
             <td>${decryptedDatabase[i].login}</td>
-            <td><input type="password" value="${decryptedDatabase[i].password}" id="pass"><i id="showPass" class="fas fa-eye" onclick="myFunction(${i})"></i></td>
+            <td><input type="password" value="" id="pass"><i id="showPass" class="fas fa-eye" onclick="myFunction(${i})"></i></td>
             <td><i class="fas fa-trash" onclick="deletePassword(${i})"></i></td>
             `
+            li.querySelector('#pass').value = decryptedDatabase[i].password;
             ul.appendChild(li);
         }
     })
