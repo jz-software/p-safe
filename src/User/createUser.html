@@ -27,6 +27,12 @@
         </script>
 
         <script>
+            ipcRenderer.on('user:exists', function(){
+                const login = document.querySelector('#login');
+                login.value = "";
+                login.setAttribute('placeholder', 'user already registered');
+                login.style.borderBottom = "1px solid red";
+            });
             function submitProfile(){
                 const login = document.querySelector("#login");
                 const email = document.querySelector("#email3");

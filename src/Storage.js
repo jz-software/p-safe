@@ -181,6 +181,17 @@ class Storage{
         }
         return userArray;
     }
+    // Checks if user exists
+    checkUser(toCheck){
+        const users = this.getAllUsers();
+        let result = false;
+        for(let i=0; i<users.length; i++){
+            if(toCheck==users[i]){
+                result = true;
+            }
+        }
+        return result;
+    }
     deleteFile(path){
         const fs = require('fs')        
         try {

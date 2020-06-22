@@ -69,12 +69,17 @@ ipcMain.on('user:login', function(e, item){
     }
 });
 ipcMain.on('user:register', function(e, item){
-    storage.createUser(item.login, item.email, item.picture, item.password)
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, './src/Login/loginWindow.html'),
-        protocol: 'file',
-        slashes: true
-    }));
+    if(storage.checkUser(item.login)==true){
+        mainWindow.webContents.send('user:exists');
+    }
+    else{
+        storage.createUser(item.login, item.email, item.picture, item.password)
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, './src/Login/loginWindow.html'),
+            protocol: 'file',
+            slashes: true
+        }));
+    }    
 });
 ipcMain.on('user:checkLogin', function(e, item){
     const allUsers = storage.getAllUsers();
