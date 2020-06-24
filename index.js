@@ -2,6 +2,7 @@ const Storage = require('./src/Storage');
 
 const storage = new Storage();
 storage.checkDatabase();
+storage.cleanTrash();
 
 let dataset;
 let user;

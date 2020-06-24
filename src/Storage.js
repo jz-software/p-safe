@@ -33,6 +33,29 @@ class Storage{
     load(){
         return require(this.path+'./storage/passwords.json');
     }
+    cleanTrash(){
+        const fs = require('fs');
+        const thisPath = this.path;
+
+        console.log("Started cleaning trash");
+        console.log("Following files will be removed");
+
+        fs.readdir(this.path+'storage/trash', function (err, files) {
+            if(files.length==0){
+                console.log('No files found to remove')
+            }
+            else{
+                console.log(files)
+                for(let i=0; i<files.length; i++){
+                    try {
+                        fs.unlinkSync(thisPath+'storage/trash/'+files[i])
+                    } catch(err) {
+                        console.error(err)
+                    }
+                }
+            }    
+        });
+    }
     // Saves an object in a JSON file.
     saveJSON(myObject, path){
         var fs = require('fs');
