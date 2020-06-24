@@ -2,7 +2,7 @@ function manage(){
     ipcRenderer.on('page:profile:info:send', function(e, user){
         document.querySelector('#login').value = user.user;
         document.querySelector('#email').value = user.email;
-        document.querySelector('#profile-pic').setAttribute('src', `../../${user.picture}`);
+        document.querySelector('#profile-pic').setAttribute('src', `${path}${user.picture}`);
         document.querySelector('#nickname').textContent = user.user;
     })
     ipcRenderer.send('page:profile:info');
@@ -12,7 +12,7 @@ function manage(){
     })
 
     ipcRenderer.on('page:cropper:out', function(e, picPath){
-        document.querySelector('#profile-pic').setAttribute('src', '../../'+picPath);
+        document.querySelector('#profile-pic').setAttribute('src', picPath);
         document.querySelector('#profile-pic').setAttribute('realPath', picPath);
         document.querySelector('#profile-pic').setAttribute('changed', 'true');
     });

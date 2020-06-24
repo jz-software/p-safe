@@ -5,6 +5,34 @@ class Storage{
     user;
     password;
 
+    path = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")+'/psafe/');
+
+    // Checks if the program was previously launched on the machine
+    checkDatabase(){
+        const fs = require("fs");
+        if (fs.existsSync(this.path+'storage')) {
+            console.log('Storage detected, loading data')
+        }
+        else{
+            console.log('Storage not detected, creating...');
+            this.createDatabase();
+        }
+    }
+    createDatabase(){
+        var ncp = require('ncp').ncp;
+ 
+        ncp.limit = 16;
+        
+        ncp('./storage', this.path+'storage/', function (err) {
+        if (err) {
+            return console.error(err);
+        }
+        console.log('done');
+        });
+    }
+    load(){
+        return require(this.path+'./storage/passwords.json');
+    }
     // Saves an object in a JSON file.
     saveJSON(myObject, path){
         var fs = require('fs');
@@ -47,14 +75,14 @@ class Storage{
     // Finds an user and returns its index
     // If user is not found then returns -1
     findUser(service, name){
-        const userIndex = this.findWithAttr(require('../storage/passwords.json'), "user", name);
+        const userIndex = this.findWithAttr(require(this.path+'./storage/passwords.json'), "user", name);
         return userIndex;
     }
 
     // Merges the password dataset with the entire database before saving it to JSON
     // Must be always used before saving or loss of data will occur
     mergeDatabase(dataset){
-        const database = require('../storage/passwords.json');
+        const database = require(this.path+'./storage/passwords.json');
         const index = this.findUser('user', this.user);
         console.log(index)
 
@@ -62,7 +90,7 @@ class Storage{
         return database;
     }
     mergeUser(dataset){
-        const database = require('../storage/passwords.json');
+        const database = require(this.path+'./storage/passwords.json');
         const index = this.findUser('user', this.user);
 
         database[index] = dataset;
@@ -83,7 +111,7 @@ class Storage{
         const fs = require('fs');
         const path = require('path');
 
-        fs.copyFile(originalPath, `./storage/icons/${newPath}`, (err) => {
+        fs.copyFile(originalPath, this.path+`./storage/icons/${newPath}`, (err) => {
             if (err) throw err;
             console.log('Icon was copied to ./icons/');
         });
@@ -104,23 +132,23 @@ class Storage{
 
         dataset.push(saveData)
 
-        this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json')
+        this.saveJSON(this.mergeDatabase(dataset), this.path+'./storage/passwords.json')
     }
     changePassword(dataset, index, newValue, password){
         dataset[index].password = this.encryptString(newValue, password);
-        this.saveJSON(dataset, './storage/passwords.json');
+        this.saveJSON(dataset, this.path+'./storage/passwords.json');
     }
     removePassword(dataset, toRemove){
         const fs = require('fs')
         try {
-            fs.unlinkSync(`./storage/icons/${dataset[toRemove].icon}`)
+            fs.unlinkSync(this.path+`./storage/icons/${dataset[toRemove].icon}`)
 
         } catch(err) {
             console.error(err)
         }
 
         dataset.splice(toRemove, 1);
-        this.saveJSON(this.mergeDatabase(dataset), './storage/passwords.json');
+        this.saveJSON(this.mergeDatabase(dataset), this.path+'./storage/passwords.json');
 
     }
     decryptAll(dataset){
@@ -154,15 +182,15 @@ class Storage{
             password: bcrypt.hashSync(password, 10),
             passwords: []
         }
-        const database = require('../storage/passwords.json');
+        const database = require(this.path+'./storage/passwords.json');
         database.push(data);
-        this.saveJSON(database, './storage/passwords.json');
+        this.saveJSON(database, this.path+'./storage/passwords.json');
     }
 
     // Checks the hash and returns true or false
     validateUser(name, password){
         const bcrypt = require('bcrypt');
-        const database = require('../storage/passwords.json');
+        const database = require(this.path+'./storage/passwords.json');
         const validation = bcrypt.compareSync(password, database[this.findUser('user', name)].password);
 
         if(validation==true){
@@ -174,7 +202,7 @@ class Storage{
         return validation;
     }
     getAllUsers(){
-        const database = require('../storage/passwords.json');
+        const database = require(this.path+'./storage/passwords.json');
         const userArray = [];
         for(let i=0; i<database.length; i++){
             userArray.push(database[i].user)
@@ -216,7 +244,7 @@ class Storage{
             this.deleteFile(dataset.picture);
             const path = require('path');
             const storagePath = './storage/icons/'+path.basename(user.picture.path);
-            this.moveFile(user.picture.path, storagePath);
+            this.moveFile(user.picture.path, this.path+storagePath);
             dataset.picture = storagePath;
         }
         else{
@@ -225,7 +253,7 @@ class Storage{
           
         this.user = user.login;
 
-        this.saveJSON(this.mergeUser(dataset), './storage/passwords.json');
+        this.saveJSON(this.mergeUser(dataset), this.path+'./storage/passwords.json');
     }
 
 }

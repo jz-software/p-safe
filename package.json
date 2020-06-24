@@ -11,6 +11,7 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "cryptr": "^6.0.2",
-    "electron": "^9.0.2"
+    "electron": "^9.0.2",
+    "ncp": "^2.0.0"
   }
 }

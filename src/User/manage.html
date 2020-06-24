@@ -6,7 +6,7 @@
         <div class="manage">
             <div class="main-info">
                 <div class="first-info">
-                    <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('cropper:choosePicture')" onerror="this.onerror=null; this.src='../../storage/icons/default.png'">
+                    <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('cropper:choosePicture')" onerror="this.onerror=null; this.src=path+'./storage/icons/default.png'">
                     <div>
                         <h1 id="nickname"></h1>
                         <p onclick="ipcRenderer.send('cropper:choosePicture')">Change Profile Picture</p>

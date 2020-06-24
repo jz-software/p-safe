@@ -1,7 +1,8 @@
-let rawDataset = require('./storage/passwords.json')
-const Storage = require('./src/Storage')
+const Storage = require('./src/Storage');
 
 const storage = new Storage();
+storage.checkDatabase();
+
 let dataset;
 let user;
 
@@ -50,13 +51,8 @@ ipcMain.on('user:login', function(e, item){
     const auth = storage.validateUser(item.login, item.password);
     if(auth==true){
         storage.password = item.password;
-        dataset = rawDataset[storage.findUser('user', item.login)];
-        user = {
-            nickname: rawDataset[storage.findUser('user', item.login)].user,
-            email: storage.decryptString(rawDataset[storage.findUser('user', item.login)].email)
-        }
+        dataset = storage.load()[storage.findUser('user', item.login)];
         console.log(user)
-        rawDataset = null;
         storage.user = item.login;
         mainWindow.loadURL(url.format({
             pathname: path.join(__dirname, './src/Main/mainWindow.html'),
@@ -89,7 +85,7 @@ ipcMain.on('user:checkLogin', function(e, item){
     for(let i=0; i<allUsers.length; i++){
         if(allUsers[i]==item.username){
             output = true;
-            userData = require('./storage/passwords.json')[i].picture;
+            userData = require(storage.path+'./storage/passwords.json')[i].picture;
         }
     }
     if(output==true){
@@ -152,9 +148,7 @@ ipcMain.on('page:profile:info', function(){
 })
 ipcMain.on('page:profile:save', function(e, userData){
     storage.changeUser(userData, dataset)
-    let rawDataset = require('./storage/passwords.json');
-    dataset = rawDataset[storage.findUser('user', userData.login)];
-    rawDataset = null;
+    dataset = storage.load()[storage.findUser('user', userData.login)];
     mainWindow.reload();
 })
 ipcMain.on('page:cropper', function(e, picPath){
@@ -184,13 +178,16 @@ ipcMain.on('page:cropper:cropped', function(e, img){
 
     const tempName = storage.makeString(32) + '.png';
 
-    require("fs").writeFile('./storage/trash/'+tempName, base64Data, 'base64', function(err) {
+    require("fs").writeFile(storage.path+'./storage/trash/'+tempName, base64Data, 'base64', function(err) {
         console.log(err);
     });
 
 
-    mainWindow.webContents.send('page:cropper:out', `./storage/trash/${tempName}`);
+    mainWindow.webContents.send('page:cropper:out', `${storage.path}./storage/trash/${tempName}`);
 
+});
+ipcMain.on('get:path', function(e){
+    mainWindow.webContents.send('get:path', storage.path);
 });
 ipcMain.on('page:logout', function(){
     mainWindow.loadURL(url.format({
@@ -198,7 +195,6 @@ ipcMain.on('page:logout', function(){
         protocol: 'file',
         slashes: true
     }));
-    rawDataset = require('./storage/passwords.json')
     storage.password = null;
     dataset = null;
     user = null;

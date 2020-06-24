@@ -16,6 +16,14 @@
         <script>
             const electron = require('electron');
             const {ipcRenderer} = electron;
+            let path;
+        </script>
+
+        <script>
+            ipcRenderer.send('get:path');
+            ipcRenderer.on('get:path', function(e, thisPath){
+                path = thisPath;
+            })
         </script>
 
         <div class="sidenav">
