@@ -11,10 +11,12 @@ class Storage{
     checkDatabase(){
         const fs = require("fs");
         if (fs.existsSync(this.path+'storage')) {
-            console.log('Storage detected, loading data')
+            console.log('Storage detected, loading data');
+	    this.cleanTrash();
         }
         else{
             console.log('Storage not detected, creating...');
+	    fs.mkdirSync(this.path);
             this.createDatabase();
         }
     }
