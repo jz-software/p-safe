@@ -248,7 +248,7 @@ class Storage{
     deleteFile(path){
         const fs = require('fs')        
         try {
-          fs.unlinkSync(path)
+          fs.unlinkSync(this.path+path)
         } catch(err) {
           console.error(err)
         }         
