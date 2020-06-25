@@ -16,21 +16,15 @@ class Storage{
         }
         else{
             console.log('Storage not detected, creating...');
-	    fs.mkdirSync(this.path);
-            this.createDatabase();
+	        fs.mkdirSync(this.path);
+            fs.mkdirSync(this.path+'storage');
+            fs.mkdirSync(this.path+'storage/icons');
+            fs.mkdirSync(this.path+'storage/trash');
+            fs.writeFile(this.path+'storage/passwords.json', '[]', function (err) {
+                if (err) throw err;
+                console.log('File is created successfully.');
+            });  
         }
-    }
-    createDatabase(){
-        var ncp = require('ncp').ncp;
- 
-        ncp.limit = 16;
-        
-        ncp('./storage', this.path+'storage/', function (err) {
-        if (err) {
-            return console.error(err);
-        }
-        console.log('done');
-        });
     }
     load(){
         return require(this.path+'./storage/passwords.json');
