@@ -8,10 +8,10 @@ function manage(){
     ipcRenderer.send('page:profile:info');
 
     ipcRenderer.on('cropper:picture', function(e, path){
-        ipcRenderer.send('page:cropper', path);
+        ipcRenderer.send('page:cropper', path, 'manageUser');
     })
 
-    ipcRenderer.on('page:cropper:out', function(e, picPath){
+    ipcRenderer.on('page:cropper:out:manageUser', function(e, picPath){
         document.querySelector('#profile-pic').setAttribute('src', picPath);
         document.querySelector('#profile-pic').setAttribute('realPath', picPath);
         document.querySelector('#profile-pic').setAttribute('changed', 'true');

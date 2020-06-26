@@ -29,6 +29,10 @@ function submitPassword(){
 }
 
 ipcRenderer.on('password:picture', function(e, picture){
-    document.querySelector('h1').innerHTML = `<img src="${picture}" width=64 height=64>`;
-    data.picture = picture;
+    ipcRenderer.send('page:cropper', picture, 'createPassword');
 });   
+
+ipcRenderer.on('page:cropper:out:createPassword', function(e, picPath){
+    document.querySelector('h1').innerHTML = `<img src="${picPath}" width=64 height=64>`;
+    data.picture = picPath;
+});

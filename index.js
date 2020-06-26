@@ -151,7 +151,7 @@ ipcMain.on('page:profile:save', function(e, userData){
     dataset = storage.load()[storage.findUser('user', userData.login)];
     mainWindow.reload();
 })
-ipcMain.on('page:cropper', function(e, picPath){
+ipcMain.on('page:cropper', function(e, picPath, pagePath){
     child = new BrowserWindow({ parent: mainWindow, modal: true, show: false, width: 600, height: 500,
         webPreferences: {
             nodeIntegration: true
@@ -161,13 +161,13 @@ ipcMain.on('page:cropper', function(e, picPath){
         pathname: path.join(__dirname, `./src/Picture/cropper.html`),
         protocol: 'file',
         slashes: true
-    })+'?path='+picPath);
-    child.setMenu(null);
+    })+'?path='+picPath+'&pagePath='+pagePath);
+    // child.setMenu(null);
     child.once('ready-to-show', () => {
       child.show()
     })
 });
-ipcMain.on('page:cropper:cropped', function(e, img){
+ipcMain.on('page:cropper:cropped', function(e, img, pagePath){
     child.close();
     child = null;
 
@@ -183,7 +183,7 @@ ipcMain.on('page:cropper:cropped', function(e, img){
     });
 
 
-    mainWindow.webContents.send('page:cropper:out', `${storage.path}./storage/trash/${tempName}`);
+    mainWindow.webContents.send(`page:cropper:out:${pagePath}`, `${storage.path}./storage/trash/${tempName}`);
 
 });
 ipcMain.on('get:path', function(e){

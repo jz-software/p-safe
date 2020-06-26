@@ -79,7 +79,7 @@
                 // Show
                 roundedImage = document.createElement('img');
                 roundedImage.src = roundedCanvas.toDataURL()
-                ipcRenderer.send('page:cropper:cropped', roundedCanvas.toDataURL())
+                ipcRenderer.send('page:cropper:cropped', roundedCanvas.toDataURL(), url.searchParams.get("pagePath"))
                 /*
                 result.innerHTML = '';
                 result.appendChild(roundedImage);*/
