@@ -10,7 +10,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
+const {app, BrowserWindow, Menu, ipcMain, dialog, powerMonitor} = electron;
 
 let mainWindow;
 let child;
@@ -245,3 +245,26 @@ if(process.env.NODE_ENV !== 'production'){
         ]
     })
 }
+
+// Logs out a user after certain amount of idle time
+function idleTimeout() {
+    const idleTime = 300; // 5 minutes (in seconds)
+    app.whenReady().then(() => {
+        if(powerMonitor.getSystemIdleState(idleTime+1)!='idle'){
+            if(powerMonitor.getSystemIdleTime()>=idleTime){
+                mainWindow.loadURL(url.format({
+                    pathname: path.join(__dirname, './src/Login/loginWindow.html'),
+                    protocol: 'file',
+                    slashes: true
+                }));
+                storage.password = null;
+                dataset = null;
+                user = null;
+                storage.user = null;
+            };
+        }    
+    })
+    setTimeout(idleTimeout, 1000);
+}
+  
+idleTimeout();
