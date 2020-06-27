@@ -12,6 +12,8 @@ const path = require('path');
 
 const {app, BrowserWindow, Menu, ipcMain, dialog, powerMonitor} = electron;
 
+process.env.NODE_ENV = 'development';
+
 let mainWindow;
 let child;
 

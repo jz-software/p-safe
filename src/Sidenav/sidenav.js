@@ -9,17 +9,19 @@ const sidenav =
 document.body.querySelector('.sidenav').innerHTML = sidenav;
 
 ipcRenderer.on('page:home', function(e){
-    $( ".main" ).load( "../Main/homepage.html .homepage" );
-    $.getScript( "./mainWindow.js", function(){
-        mainWindow();
+    $( ".main" ).load( "../Main/homepage.html .homepage", function(){
+        $.getScript( "./mainWindow.js", function(){
+            mainWindow();
+        });
     });
 });
 ipcRenderer.on('page:password', function(e){
     $( ".main" ).load( "../Password/createPassword.html .createPassword" );
 });
 ipcRenderer.on('page:user', function(e){
-    $( ".main" ).load( "../User/manage.html .manage" );
-    $.getScript( "../User/manage.js", function(){
-        manage();
+    $( ".main" ).load( "../User/manage.html .manage", function(){
+        $.getScript( "../User/manage.js", function(){
+            manage();
+        });
     });
 });
