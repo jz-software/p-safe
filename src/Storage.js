@@ -153,10 +153,6 @@ class Storage{
 
         this.saveJSON(this.mergeDatabase(dataset), this.path+'./storage/passwords.json')
     }
-    changePassword(dataset, index, newValue, password){
-        dataset[index].password = this.encryptString(newValue, password);
-        this.saveJSON(dataset, this.path+'./storage/passwords.json');
-    }
     removePassword(dataset, toRemove){
         const fs = require('fs')
         try {
@@ -253,6 +249,36 @@ class Storage{
             if (err) throw err;
             console.log('File moved successfully');
         });
+    }
+    decrypt(string, password){
+        const Cryptr = require('cryptr');
+        const cryptr = new Cryptr(password);
+        
+        return cryptr.decrypt(string);
+    }
+    changePassword(user, oldPassword, newPassword){
+        const dataset = this.load()[this.findUser(undefined, user)];
+        const newDataset = dataset;
+
+        if(this.validateUser(user, oldPassword)==true){
+            console.log("Valid user, changing password...");
+            // Email
+            newDataset.email = this.encryptString(this.decrypt(dataset.email, oldPassword), newPassword);
+            // Password hash
+            delete newDataset.password;
+            const bcrypt = require('bcrypt');
+            newDataset.password = bcrypt.hashSync(newPassword, 10);
+            // Passwords array
+            for(let i=0; i<dataset.passwords.length; i++){
+                newDataset.passwords[i].password = this.encryptString(this.decrypt(dataset.passwords[i].password, oldPassword), newPassword);
+            }
+
+            this.saveJSON(this.mergeUser(newDataset), this.path+'./storage/passwords.json');
+            console.log("done");
+        }
+        else{
+            console.log("Wrong password, password not changed");
+        }
     }
     changeUser(user, dataset){
         dataset.user = user.login;
