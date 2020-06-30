@@ -94,7 +94,7 @@
     text-align: left;
 }
 .main .manage .other-info table tr .content .submit{
-    margin-top: 10%;
+    margin-top: 0%;
     background-color: #7289da;
     border: none;
     color: white;
@@ -125,3 +125,21 @@
     opacity: 0; 
     transition: 0.3s;
 }
+
+.main .manage .other-info table tr td .save-delete{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    text-align: center;
+}
+
+.main .manage .other-info table tr td .save-delete p{
+    padding-left: 8px;
+    font-family: 'Roboto', sans-serif;
+    color: #ff4747;
+    cursor: pointer;
+    transition: color 0.1s;
+}
+.main .manage .other-info table tr td .save-delete p:hover{
+    color: #fd5959;
+}    
