@@ -107,3 +107,9 @@
 .main .manage .main-info .secondary-info p{
     text-align: right;
 }    
+
+.main .manage .other-info table .repeat-password{
+    visibility: hidden; 
+    opacity: 0; 
+    transition: 0.3s;
+}

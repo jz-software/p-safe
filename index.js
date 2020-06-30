@@ -146,10 +146,15 @@ ipcMain.on('page:profile:info', function(){
     mainWindow.webContents.send('page:profile:info:send', {
         user: dataset.user, 
         email: storage.decryptString(dataset.email, storage.password), 
-        picture: dataset.picture});
+        picture: dataset.picture,
+        password: storage.password});
 })
 ipcMain.on('page:profile:save', function(e, userData){
-    storage.changeUser(userData, dataset)
+    storage.changeUser(userData, dataset);
+    if(userData.password!=undefined){
+        storage.changePassword(storage.user, storage.password, userData.password);
+        storage.password = userData.password;
+    }
     dataset = storage.load()[storage.findUser('user', userData.login)];
     mainWindow.reload();
 })

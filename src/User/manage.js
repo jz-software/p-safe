@@ -1,9 +1,12 @@
 function manage(){
+    let defaultValue;
     ipcRenderer.on('page:profile:info:send', function(e, user){
         document.querySelector('#login').value = user.user;
         document.querySelector('#email').value = user.email;
         document.querySelector('#profile-pic').setAttribute('src', `${path}${user.picture}`);
         document.querySelector('#nickname').textContent = user.user;
+        document.querySelector('#password').value = user.password;
+        defaultValue = user.password;
     })
     ipcRenderer.send('page:profile:info');
 
@@ -16,6 +19,22 @@ function manage(){
         document.querySelector('#profile-pic').setAttribute('realPath', picPath);
         document.querySelector('#profile-pic').setAttribute('changed', 'true');
     });
+
+    const repeatPassword = document.getElementById('password');
+    const repeatPassHandler = function(e) {
+        if(document.getElementById('password').value==defaultValue){
+            document.querySelector('.repeat-password').style.visibility = 'hidden';
+            document.querySelector('.repeat-password').style.opacity = '0';
+            document.querySelector('#password').setAttribute('changed', 'false');
+        }
+        else{
+            document.querySelector('.repeat-password').style.visibility = 'visible';
+            document.querySelector('.repeat-password').style.opacity = '1';
+            document.querySelector('#password').setAttribute('changed', 'true');
+        }
+    }
+    repeatPassword.addEventListener('input', repeatPassHandler);
+    repeatPassword.addEventListener('propertychange', repeatPassHandler); // for IE8
 }
 
 function saveUser(){
@@ -27,5 +46,17 @@ function saveUser(){
             path: document.querySelector('#profile-pic').getAttribute('realPath'),
         }
     }
-    ipcRenderer.send('page:profile:save', user);
+
+    if(document.querySelector('#password').getAttribute('changed')=='true'){
+        if(document.querySelector('#password').value==document.querySelector('#repeat-password').value){
+            user.password = document.querySelector('#password').value;
+            ipcRenderer.send('page:profile:save', user);
+        }
+        else{
+            document.querySelector('#repeat-password').style.borderBottom = "1px solid red";
+        }
+    }
+    else{
+        ipcRenderer.send('page:profile:save', user);
+    }
 }

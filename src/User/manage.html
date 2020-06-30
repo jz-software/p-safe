@@ -24,14 +24,14 @@
                         </tr>
                         <tr>
                             <td class="aside"><label for="password">Password</label></td>
-                            <td class="content"><input id="password" value="" spellcheck="false"></td>
+                            <td class="content"><input changed="false" id="password" value="" spellcheck="false"></td>
                         </tr>
-                        <tr class="repeat-password" style="display: none;">
+                        <tr class="repeat-password">
                             <td class="aside"><label for="repeat-password">Repeat Password</label></td>
                             <td class="content"><input id="repeat-password" value="" spellcheck="false"></td>
                         </tr>
                         <tr>
-                            <td class="aside"><button onclick="document.querySelector('.repeat-password').style.display = 'table-row'">click</button></td>
+                            <td class="aside"></td>
                             <td class="content"><button class="submit" onclick="saveUser()">SAVE</button></td>
                         </tr>
                     </table>
