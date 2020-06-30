@@ -24,11 +24,17 @@
                         </tr>
                         <tr>
                             <td class="aside"><label for="password">Password</label></td>
-                            <td class="content"><input changed="false" id="password" value="" spellcheck="false"></td>
+                            <td class="content">
+                                <input class="password" changed="false" id="password" type="password" value="" spellcheck="false">
+                                <i id="manage-show-password" onclick="manageShowPassword(0)" class="fas fa-eye"></i>
+                            </td>
                         </tr>
                         <tr class="repeat-password">
                             <td class="aside"><label for="repeat-password">Repeat Password</label></td>
-                            <td class="content"><input id="repeat-password" value="" spellcheck="false"></td>
+                            <td class="content">
+                                <input class="password" id="repeat-password" type="password" value="" spellcheck="false">
+                                <i id="manage-show-password" onclick="manageShowPassword(1)" class="fas fa-eye"></i>
+                            </td>
                         </tr>
                         <tr>
                             <td class="aside"></td>

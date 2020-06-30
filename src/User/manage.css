@@ -40,6 +40,18 @@
     color: #1EB584;
 }
 
+.main .manage #manage-show-password{
+    color: #929292;
+}
+
+.main .manage div input[type=password], select,  .main .manage div input[type=text]{
+    padding: 0px 0px;
+    margin: 8px 0;
+    border-bottom: 1px solid #929292;
+    border-radius: 0px;
+    box-sizing: border-box;
+}
+
 .main .manage .first-info{
     display: flex;
     justify-content:center;

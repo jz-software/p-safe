@@ -60,3 +60,14 @@ function saveUser(){
         ipcRenderer.send('page:profile:save', user);
     }
 }
+
+function manageShowPassword(i){
+    if(document.querySelectorAll('.password')[i].type=='password'){
+        document.querySelectorAll('.password')[i].type = 'text';
+        document.querySelectorAll('#manage-show-password')[i].setAttribute('class', 'fas fa-low-vision');
+    }
+    else{
+        document.querySelectorAll('.password')[i].type = 'password';
+        document.querySelectorAll('#manage-show-password')[i].setAttribute('class', 'fas fa-eye');
+    }
+}
