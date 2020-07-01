@@ -41,13 +41,13 @@ body{
     border-radius: 3px;
 }
 
-.main .homepage table tr td i{
+.main .homepage table tr td .fa-trash{
     color: red;
     transition: 0.1s;
     cursor: pointer;
 }
 
-.main .homepage table tr td i:hover{
+.main .homepage table tr td .fa-trash:hover{
     color: rgb(104, 0, 0);
 }
 .main .homepage table tr td #showPass{
@@ -66,4 +66,14 @@ body{
     padding: 0.1%;
     background-color: #202225;
     color: #a8b9be;
+}
+
+.main .homepage table tr td .icon i{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    color: #929292;
+    width: 46px;
+    height: 46px;
+    font-size: 26px;
 }

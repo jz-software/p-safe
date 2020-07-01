@@ -1,3 +1,7 @@
+function defaultIcon(i){
+    document.querySelectorAll('.icon')[i].innerHTML = '<i class="fas fa-key"></i>';
+}
+
 function mainWindow(){
     const ul = document.querySelector('.passwords');
     ipcRenderer.on('password:update', function(e, decryptedDatabase){
@@ -6,7 +10,7 @@ function mainWindow(){
             const li = document.createElement('tr');
             li.innerHTML = 
             `
-            <td><img src="${path}storage/icons/${decryptedDatabase[i].icon}" onerror="this.onerror=null; this.src='${path}./storage/icons/default.png'"></td>
+            <td><div class="icon"><img src="${path}storage/icons/${decryptedDatabase[i].icon}" notfound='false' onerror="this.onerror=null; this.src='${path}./storage/icons/default.png'; defaultIcon(${i})"></div></td>
             <td>${decryptedDatabase[i].service}</td>
             <td>${decryptedDatabase[i].login}</td>
             <td><input type="password" value="" id="pass"><i id="showPass" class="fas fa-eye" onclick="myFunction(${i})"></i></td>
