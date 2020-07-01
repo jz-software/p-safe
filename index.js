@@ -180,19 +180,12 @@ ipcMain.on('page:cropper:cropped', function(e, img, pagePath){
     child = null;
 
     var base64Data = img.replace(/^data:image\/png;base64,/, "");
-
-    //dataset.picture = `${this.makeString(32)}.${path.extname(user.picture)}`
-    //s.copyPicture(user.picture, dataset.picture);
-
     const tempName = storage.makeString(32) + '.png';
 
     require("fs").writeFile(storage.path+'./storage/trash/'+tempName, base64Data, 'base64', function(err) {
         console.log(err);
+        mainWindow.webContents.send(`page:cropper:out:${pagePath}`, `${storage.path}./storage/trash/${tempName}`);
     });
-
-
-    mainWindow.webContents.send(`page:cropper:out:${pagePath}`, `${storage.path}./storage/trash/${tempName}`);
-
 });
 ipcMain.on('get:path', function(e){
     mainWindow.webContents.send('get:path', storage.path);
