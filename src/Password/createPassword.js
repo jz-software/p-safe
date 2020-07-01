@@ -14,6 +14,7 @@ function submitPassword(){
             icon: data.picture
         }    
         ipcRenderer.send('password:add', item);
+        data = {};
     }
     else{
         pass1.style.padding = "10px"

@@ -143,11 +143,13 @@ class Storage{
         const saveData = {
             service: service,
             login: login,
-            password: this.encryptString(toStore, this.password),
-            icon: `${this.makeString(32)}.${path.extname(icon)}`
+            password: this.encryptString(toStore, this.password)
         }
 
-        this.copyPicture(icon, saveData.icon);
+        if(icon!=undefined){
+            saveData.icon = `${this.makeString(32)}.${path.extname(icon)}`;
+            this.copyPicture(icon, saveData.icon);
+        }
 
         dataset.push(saveData)
 
