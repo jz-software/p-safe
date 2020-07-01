@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color: #36393f;
+    text-align: center;
+}
+
+#profile-pic{
+    font-size: 150px;
+    color: #929292;
+}
+
+.nickname{
+    font-size: 32px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.password{
+    background: none;
+    border: none;
+    transition: 0.3s;
+    color: #929292;
+    font-family: 'Roboto', sans-serif;
+    border-bottom: 1px solid #929292;
+    font-size: 16px;
+    text-align: center;
+}   
+
+.password:focus {
+    outline: none;
+    color: #1EB584;
+}
+
+.delete{
+    margin-top: 10%;
+    background-color: rgb(255, 0, 0);
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}    
+.delete:hover{
+    background-color: #50619e;
+}

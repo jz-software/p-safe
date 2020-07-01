@@ -300,7 +300,16 @@ class Storage{
 
         this.saveJSON(this.mergeUser(dataset), this.path+'./storage/passwords.json');
     }
-
+    deleteUser(user, password){
+        const database = this.load();
+        if(this.validateUser(user, password)==true){
+            database.splice(this.findUser(null, user), 1);
+            this.saveJSON(database, this.path+'./storage/passwords.json');
+        }
+        else{
+            console.log('false')
+        }
+    }
 }
 
 module.exports = Storage

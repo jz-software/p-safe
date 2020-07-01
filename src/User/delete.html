@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Delete Account</title>
+        <link rel="stylesheet" type="text/css" href="./delete.css">
+        <script src="https://kit.fontawesome.com/3849555537.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+            let info = {};
+        </script>
+        <div>
+            <i id="profile-pic" class="fas fa-user-circle"></i>
+            <br><br>
+            <input class="password" id="password" type="password" value="" spellcheck="false" placeholder="Password">
+            <br><br>
+            <input class="password" id="repeat-password" type="password" value="" spellcheck="false" placeholder="Repeat Password">
+            <br>
+            <button class="delete" onclick="deleteUser();">DELETE</button>
+        </div>    
+        <script>
+            ipcRenderer.send('page:deleteAccount:get');
+            ipcRenderer.on('page:deleteAccount:get', function(e, user){
+                info.user = user.nickname;
+                info.password = user.password;
+            });
+        </script>
+        <script>
+            function deleteUser(){
+                const pass1 = document.querySelector('#password');
+                const pass2 = document.querySelector('#repeat-password');
+                if(pass1.value==pass2.value&&pass1.value==info.password){
+                    ipcRenderer.send('page:deleteAccount:delete', info.user, pass1.value)
+                }
+                else{
+                    pass1.setAttribute('placeholder', 'Wrong Password');
+                    pass1.value = "";
+                    pass2.value = "";
+                    pass1.style.borderBottom = "1px solid red";
+                    pass2.style.borderBottom = "1px solid red";
+                }
+            }
+            const pass1 = document.querySelector('#password');
+            const pass2 = document.querySelector('#repeat-password');
+            function checkPass(){
+                if(pass1.value==pass2.value){
+                    pass1.style.borderBottom = "1px solid #1EB584";
+                    pass2.style.borderBottom = "1px solid #1EB584";
+                }
+                else{
+                    pass2.style.borderBottom = "1px solid red"; 
+                }
+            }
+            pass2.addEventListener('input', checkPass);
+            pass2.addEventListener('propertychange', checkPass); // for IE8
+        </script>
+    </body>
+</html>

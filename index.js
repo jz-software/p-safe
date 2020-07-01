@@ -16,6 +16,7 @@ process.env.NODE_ENV = 'development';
 
 let mainWindow;
 let child;
+let deleteAccount;
 
 app.on('ready', function(){
     mainWindow = new BrowserWindow({
@@ -207,6 +208,38 @@ ipcMain.on('page:logout', function(){
     user = null;
     storage.user = null;
 })
+ipcMain.on('page:deleteAccount', function(){
+    deleteAccount = new BrowserWindow({ parent: mainWindow, modal: true, show: false, width: 600, height: 500,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    })
+    deleteAccount.loadURL(url.format({
+        pathname: path.join(__dirname, `./src/User/delete.html`),
+        protocol: 'file',
+        slashes: true
+    }));
+    deleteAccount.once('ready-to-show', () => {
+      deleteAccount.show()
+    })
+});
+ipcMain.on('page:deleteAccount:get', function(){
+    const user = {
+        nickname: storage.user,
+        password: storage.password
+    }
+    deleteAccount.webContents.send('page:deleteAccount:get', user);
+});
+ipcMain.on('page:deleteAccount:delete', function(e, user, password){
+    deleteAccount.close();
+    deleteAccount = null;
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, './src/Login/loginWindow.html'),
+        protocol: 'file',
+        slashes: true
+    }));
+    storage.deleteUser(user, password);
+});
 
 // Update window
 function updateWindow(){
@@ -268,6 +301,15 @@ function idleTimeout() {
                 dataset = null;
                 user = null;
                 storage.user = null;
+
+                if(child!=undefined){
+                    child.close();
+                    child = null;
+                }
+                if(deleteAccount!=undefined){
+                    deleteAccount.close();
+                    deleteAccount = null;
+                }    
             };
         }    
     })
