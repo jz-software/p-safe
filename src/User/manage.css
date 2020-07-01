@@ -73,6 +73,16 @@
     text-align: left;
 }
 
+.main .manage .first-info i{
+    font-size: 100px;
+    color: #929292;
+    transition: 0.2s;
+    display: none;
+}
+.main .manage .first-info i:hover{
+    opacity: 0.5;
+}
+
 .main .manage .first-info div h1{
     color: #929292;
 }    

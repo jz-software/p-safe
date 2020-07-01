@@ -18,6 +18,11 @@ function manage(){
         document.querySelector('#profile-pic').setAttribute('src', picPath);
         document.querySelector('#profile-pic').setAttribute('realPath', picPath);
         document.querySelector('#profile-pic').setAttribute('changed', 'true');
+
+        // Hides default
+        document.querySelector('#profile-pic-default').style.display = "none";
+        // Shows img
+        document.querySelector('#profile-pic').style.display = "inline-block";
     });
 
     const repeatPassword = document.getElementById('password');

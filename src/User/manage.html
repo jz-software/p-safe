@@ -6,7 +6,11 @@
         <div class="manage">
             <div class="main-info">
                 <div class="first-info">
-                    <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('cropper:choosePicture')" onerror="this.onerror=null; this.src=path+'./storage/icons/default.png'">
+                    <div>
+                        <i id="profile-pic-default" class="fas fa-user-circle" onclick="ipcRenderer.send('cropper:choosePicture')"></i>
+                        <img id="profile-pic" realPath="" changed="false" onclick="ipcRenderer.send('cropper:choosePicture')" 
+                            onerror="this.style.display='none'; document.querySelector('#profile-pic-default').style.display='inline-block'">
+                    </div>
                     <div>
                         <h1 id="nickname"></h1>
                         <p onclick="ipcRenderer.send('cropper:choosePicture')">Change Profile Picture</p>
