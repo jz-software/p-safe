@@ -53,9 +53,14 @@ function saveUser(){
     }
 
     if(document.querySelector('#password').getAttribute('changed')=='true'){
-        if(document.querySelector('#password').value==document.querySelector('#repeat-password').value){
+        if(document.querySelector('#password').value==document.querySelector('#repeat-password').value&&document.querySelector('#password').value.length>=8){
             user.password = document.querySelector('#password').value;
             ipcRenderer.send('page:profile:save', user);
+        }
+        else if(document.querySelector('#password').value.length<8){
+            document.querySelector('#repeat-password').value = '';
+            document.querySelector('#repeat-password').setAttribute('placeholder', '8 characters minimum');
+            document.querySelector('#repeat-password').style.borderBottom = '1px solid red'; 
         }
         else{
             document.querySelector('#repeat-password').style.borderBottom = "1px solid red";

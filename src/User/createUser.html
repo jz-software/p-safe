@@ -17,6 +17,7 @@
                 <br><br>
                 <input id="pass2" type="password" placeholder="repeat password" spellcheck="false">
                 <br><br>
+                <p class="must-contain">The password must contain at least 8 characters</p>
                 <button onclick="submitProfile()">CONTINUE</button>
             </div>    
         </div>
@@ -39,13 +40,16 @@
                 const pass1 = document.querySelector("#pass1");
                 const pass2 = document.querySelector("#pass2");
 
-                if(pass1.value==pass2.value){
+                if(pass1.value==pass2.value&&pass1.value.length>=8){
                     const item = {
                         login: login.value,
                         email: email.value,
                         password: pass1.value
                     }    
                     ipcRenderer.send('user:register', item);
+                }
+                else if(pass1.value.length<8){
+                    document.querySelector('.must-contain').style.display = 'block';
                 }
                 else{
                     pass1.style.padding = "10px"
