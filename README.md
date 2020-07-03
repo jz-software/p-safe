@@ -27,7 +27,7 @@ npm start
 ## How the passwords are stored?
 The program uses an [aes-256-gcm](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) module.
 
-Passwords are stored locally, so internet connection is not required to use the program.
+Passwords are stored locally.
 
 ## Profiles
 The program can have multiple profiles each having their own passwords and settings.
