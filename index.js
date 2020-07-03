@@ -9,6 +9,7 @@ let user;
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+const internetAvailable = require("internet-available");
 
 const {app, BrowserWindow, Menu, ipcMain, dialog, powerMonitor} = electron;
 
@@ -17,6 +18,8 @@ process.env.NODE_ENV = 'development';
 let mainWindow;
 let child;
 let deleteAccount;
+
+let internetConnection;
 
 app.on('ready', function(){
     mainWindow = new BrowserWindow({
@@ -35,6 +38,16 @@ app.on('ready', function(){
 
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     Menu.setApplicationMenu(mainMenu);
+});
+
+
+ipcMain.on('internetConnection:check', function(e){
+    internetAvailable().then(function(){
+        internetConnection = true;
+    }).catch(function(){
+        mainWindow.webContents.send('internetConnection:false');
+        internetConnection = false;
+    });
 });
 
 ipcMain.on('password:add', function(e, item){
@@ -281,7 +294,7 @@ if(process.env.NODE_ENV !== 'production'){
 
 // Logs out a user after certain amount of idle time
 function idleTimeout() {
-    const idleTime = 300; // 5 minutes (in seconds)
+    const idleTime = 10; // 5 minutes (in seconds)
     app.whenReady().then(() => {
         if(powerMonitor.getSystemIdleState(idleTime+1)!='idle'){
             if(powerMonitor.getSystemIdleTime()>=idleTime){
@@ -307,6 +320,18 @@ function idleTimeout() {
         }    
     })
     setTimeout(idleTimeout, 1000);
-}
-  
+}  
 idleTimeout();
+
+function internetTimeout(){
+    if(internetConnection==false){
+        internetAvailable().then(function(){
+            mainWindow.webContents.send('internetConnection:true');
+            internetConnection = true;
+        }).catch(function(){
+            mainWindow.webContents.send('internetConnection:false');
+        });
+    }    
+    setTimeout(internetTimeout, 5000);
+}
+internetTimeout();
