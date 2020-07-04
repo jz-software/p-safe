@@ -101,7 +101,7 @@ ipcMain.on('user:checkLogin', function(e, item){
     for(let i=0; i<allUsers.length; i++){
         if(allUsers[i]==item.username){
             output = true;
-            userData = require(storage.path+'./storage/passwords.json')[i].picture;
+            userData = require(storage.path+path.normalize('./storage/passwords.json'))[i].picture;
         }
     }
     if(output==true){

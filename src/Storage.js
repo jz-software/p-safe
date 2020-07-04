@@ -5,7 +5,8 @@ class Storage{
     user;
     password;
 
-    path = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")+'/psafe/');
+    pathModule = require('path'); 
+    path = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share"))+this.pathModule.normalize('/psafe/');
 
     // Checks if the program was previously launched on the machine
     checkDatabase(){
@@ -17,26 +18,27 @@ class Storage{
         else{
             console.log('Storage not detected, creating...');
 	        fs.mkdirSync(this.path);
-            fs.mkdirSync(this.path+'storage');
-            fs.mkdirSync(this.path+'storage/icons');
-            fs.mkdirSync(this.path+'storage/trash');
-            fs.writeFile(this.path+'storage/passwords.json', '[]', function (err) {
+            fs.mkdirSync(this.path+this.pathModule.normalize('storage'));
+            fs.mkdirSync(this.path+this.pathModule.normalize('storage/icons'));
+            fs.mkdirSync(this.path+this.pathModule.normalize('storage/trash'));
+            fs.writeFile(this.path+this.pathModule.normalize('storage/passwords.json'), '[]', function (err) {
                 if (err) throw err;
                 console.log('File is created successfully.');
             });  
         }
     }
     load(){
-        return require(this.path+'./storage/passwords.json');
+        return require(this.path+this.pathModule.normalize('storage/passwords.json'));
     }
     cleanTrash(){
         const fs = require('fs');
         const thisPath = this.path;
+        const pathModule = require('path');
 
         console.log("Started cleaning trash");
         console.log("Following files will be removed");
 
-        fs.readdir(this.path+'storage/trash', function (err, files) {
+        fs.readdir(this.path+this.pathModule.normalize('storage/trash'), function (err, files) {
             if(files.length==0){
                 console.log('No files found to remove')
             }
@@ -44,7 +46,7 @@ class Storage{
                 console.log(files)
                 for(let i=0; i<files.length; i++){
                     try {
-                        fs.unlinkSync(thisPath+'storage/trash/'+files[i])
+                        fs.unlinkSync(thisPath+pathModule.normalize('storage/trash/')+files[i])
                     } catch(err) {
                         console.error(err)
                     }
@@ -94,14 +96,14 @@ class Storage{
     // Finds an user and returns its index
     // If user is not found then returns -1
     findUser(service, name){
-        const userIndex = this.findWithAttr(require(this.path+'./storage/passwords.json'), "user", name);
+        const userIndex = this.findWithAttr(require(this.path+this.pathModule.normalize('storage/passwords.json')), "user", name);
         return userIndex;
     }
 
     // Merges the password dataset with the entire database before saving it to JSON
     // Must be always used before saving or loss of data will occur
     mergeDatabase(dataset){
-        const database = require(this.path+'./storage/passwords.json');
+        const database = require(this.path+this.pathModule.normalize('storage/passwords.json'));
         const index = this.findUser('user', this.user);
         console.log(index)
 
@@ -109,7 +111,7 @@ class Storage{
         return database;
     }
     mergeUser(dataset){
-        const database = require(this.path+'./storage/passwords.json');
+        const database = require(this.path+this.pathModule.normalize('storage/passwords.json'));
         const index = this.findUser('user', this.user);
 
         database[index] = dataset;
@@ -130,7 +132,7 @@ class Storage{
         const fs = require('fs');
         const path = require('path');
 
-        fs.copyFile(originalPath, this.path+`./storage/icons/${newPath}`, (err) => {
+        fs.copyFile(originalPath, this.path+this.pathModule.normalize(`storage/icons/${newPath}`), (err) => {
             if (err) throw err;
             console.log('Icon was copied to ./icons/');
         });
@@ -153,7 +155,7 @@ class Storage{
 
         dataset.push(saveData)
 
-        this.saveJSON(this.mergeDatabase(dataset), this.path+'./storage/passwords.json')
+        this.saveJSON(this.mergeDatabase(dataset), this.path+this.pathModule.normalize('storage/passwords.json'));
     }
     removePassword(dataset, toRemove){
         const fs = require('fs')
@@ -165,7 +167,7 @@ class Storage{
         }
 
         dataset.splice(toRemove, 1);
-        this.saveJSON(this.mergeDatabase(dataset), this.path+'./storage/passwords.json');
+        this.saveJSON(this.mergeDatabase(dataset), this.path+this.pathModule.normalize('storage/passwords.json'));
 
     }
     decryptAll(dataset){
@@ -199,15 +201,15 @@ class Storage{
             password: bcrypt.hashSync(password, 10),
             passwords: []
         }
-        const database = require(this.path+'./storage/passwords.json');
+        const database = require(this.path+this.pathModule.normalize('storage/passwords.json'));
         database.push(data);
-        this.saveJSON(database, this.path+'./storage/passwords.json');
+        this.saveJSON(database, this.path+this.pathModule.normalize('storage/passwords.json'));
     }
 
     // Checks the hash and returns true or false
     validateUser(name, password){
         const bcrypt = require('bcrypt');
-        const database = require(this.path+'./storage/passwords.json');
+        const database = require(this.path+this.pathModule.normalize('storage/passwords.json'));
         const validation = bcrypt.compareSync(password, database[this.findUser('user', name)].password);
 
         if(validation==true){
@@ -219,7 +221,7 @@ class Storage{
         return validation;
     }
     getAllUsers(){
-        const database = require(this.path+'./storage/passwords.json');
+        const database = require(this.path+this.pathModule.normalize('storage/passwords.json'));
         const userArray = [];
         for(let i=0; i<database.length; i++){
             userArray.push(database[i].user)
@@ -275,7 +277,7 @@ class Storage{
                 newDataset.passwords[i].password = this.encryptString(this.decrypt(dataset.passwords[i].password, oldPassword), newPassword);
             }
 
-            this.saveJSON(this.mergeUser(newDataset), this.path+'./storage/passwords.json');
+            this.saveJSON(this.mergeUser(newDataset), this.path+this.pathModule.normalize('storage/passwords.json'));
             console.log("done");
         }
         else{
@@ -290,7 +292,7 @@ class Storage{
         if(user.picture.changed=='true'){
             this.deleteFile(dataset.picture);
             const path = require('path');
-            const storagePath = './storage/icons/'+path.basename(user.picture.path);
+            const storagePath = this.pathModule.normalize('storage/icons/')+path.basename(user.picture.path);
             this.moveFile(user.picture.path, this.path+storagePath);
             dataset.picture = storagePath;
         }
@@ -300,13 +302,13 @@ class Storage{
           
         this.user = user.login;
 
-        this.saveJSON(this.mergeUser(dataset), this.path+'./storage/passwords.json');
+        this.saveJSON(this.mergeUser(dataset), this.path+this.pathModule.normalize('storage/passwords.json'));
     }
     deleteUser(user, password){
         const database = this.load();
         if(this.validateUser(user, password)==true){
             database.splice(this.findUser(null, user), 1);
-            this.saveJSON(database, this.path+'./storage/passwords.json');
+            this.saveJSON(database, this.path+this.pathModule.normalize('storage/passwords.json'));
         }
         else{
             console.log('false')
