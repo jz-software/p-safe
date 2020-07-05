@@ -294,7 +294,7 @@ if(process.env.NODE_ENV !== 'production'){
 
 // Logs out a user after certain amount of idle time
 function idleTimeout() {
-    const idleTime = 10; // 5 minutes (in seconds)
+    const idleTime = 300; // 5 minutes (in seconds)
     app.whenReady().then(() => {
         if(powerMonitor.getSystemIdleState(idleTime+1)!='idle'){
             if(powerMonitor.getSystemIdleTime()>=idleTime){
