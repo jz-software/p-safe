@@ -11,12 +11,14 @@ function mainWindow(){
             li.innerHTML = 
             `
             <td><div class="icon"><img src="${path}storage/icons/${decryptedDatabase[i].icon}" notfound='false' onerror="this.onerror=null; this.src='${path}./storage/icons/default.png'; defaultIcon(${i})"></div></td>
-            <td>${decryptedDatabase[i].service}</td>
-            <td>${decryptedDatabase[i].login}</td>
+            <td><input id="service" onclick="this.select();" readonly class="service-nickname" spellcheck="false"</td>
+            <td><input id="nickname" onclick="this.select();" readonly class="service-nickname" spellcheck="false"</td>
             <td><input type="password" value="" id="pass"><i id="showPass" class="fas fa-eye" onclick="myFunction(${i})"></i></td>
             <td><i class="fas fa-trash" onclick="deletePassword(${i})"></i></td>
             `
             li.querySelector('#pass').value = decryptedDatabase[i].password;
+            li.querySelector('#service').value = decryptedDatabase[i].service;
+            li.querySelector('#nickname').value = decryptedDatabase[i].login;
             ul.appendChild(li);
         }
     })

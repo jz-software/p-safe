@@ -26,7 +26,9 @@ app.on('ready', function(){
         icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        'minHeight': 600,
+        'minWidth': 800
     });
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, './src/Login/loginWindow.html'),
