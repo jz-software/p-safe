@@ -40,7 +40,7 @@ body{
     color: #a8b9be;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    width: 7em;
+    width: 11em;
     cursor: pointer;
 }
 .main .homepage table tr td .service-nickname:focus{
@@ -53,6 +53,13 @@ body{
 .main .homepage table tr td .service-nickname::selection{
     background-color: #1EB584;
     color: white;
+}
+
+.main .homepage table tr td p{
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .main .homepage table tr td img{
