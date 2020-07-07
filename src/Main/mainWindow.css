@@ -55,8 +55,8 @@ body{
     color: white;
 }
 
-.main .homepage table tr td p{
-    width: 100px;
+.main .homepage table tr td .service{
+    max-width: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
