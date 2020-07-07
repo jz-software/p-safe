@@ -1,6 +1,15 @@
 function defaultIcon(i){
     document.querySelectorAll('.icon')[i].innerHTML = '<i class="fas fa-key"></i>';
 }
+function truncateText(selector, maxLength) {
+    var element = document.querySelector(selector),
+        truncated = element.innerText;
+
+    if (truncated.length > maxLength) {
+        truncated = truncated.substr(0,maxLength) + '...';
+    }
+    return truncated;
+}
 
 function mainWindow(){
     const ul = document.querySelector('.passwords');
@@ -28,7 +37,8 @@ function mainWindow(){
 
     ipcRenderer.on('user:infosent', function(e, info){
         const information = info;
-        document.querySelector(".welcome h1").innerHTML = `Welcome, <span style="color: #7289da">${information}</span>`;
+        document.querySelector(".welcome h1").innerHTML = `Welcome, <span>${information}</span>`;
+        document.querySelector('.welcome h1 span').innerText = truncateText('.welcome h1 span', 20);
     })
 
     ipcRenderer.send('password:update');

@@ -20,6 +20,13 @@
     opacity: 0.5;
 }
 
+.main .manage div #nickname{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 30vh;
+}
+
 .main .manage div label{
     font-family: 'Roboto', sans-serif;
     color: #7289da;

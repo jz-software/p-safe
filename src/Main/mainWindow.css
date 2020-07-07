@@ -96,6 +96,10 @@ body{
     color: #a8b9be;
 }
 
+.main .homepage .welcome h1 span{
+    color: #7289da;
+}
+
 .main .homepage table tr td .icon i{
     display: flex;
     justify-content:center;
